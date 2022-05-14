@@ -11,6 +11,7 @@ namespace ElevatorTask
         [SerializeField] Floor[] floors;
 
         private int _currentElevatorLevel = 0;
+        private const float ELEVATOR_SPEED = 4f;
 
         private void OnValidate() => SortFloorsByHeight();
 
@@ -36,11 +37,22 @@ namespace ElevatorTask
             else
             {
                 Vector3 targetPosition = new Vector3(transform.position.x, targetFloor.ElevatorTarget.position.y, transform.position.z);
-                transform.position = targetPosition;
-
-                elevatorAnimator.SetTrigger("Open");
-                targetFloor.DoorsAnimator.SetTrigger("Open");
+                StartCoroutine(MoveElevatorCoroutine(targetPosition, targetFloor.DoorsAnimator));
             }
+        }
+
+        private IEnumerator MoveElevatorCoroutine(Vector3 targetPosition, Animator doorsAnimator)
+        {
+            while (Vector3.Distance(transform.position, targetPosition) > 0.01f)
+            {
+                float step = ELEVATOR_SPEED * Time.deltaTime;
+                transform.position = Vector3.MoveTowards(transform.position, targetPosition, step);
+
+                yield return null;
+            }
+
+            elevatorAnimator.SetTrigger("Open");
+            doorsAnimator.SetTrigger("Open");
         }
 
         private void SetFloorLevels()
