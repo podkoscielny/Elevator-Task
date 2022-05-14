@@ -5,7 +5,7 @@ namespace ElevatorTask
 {
     public class Floor : MonoBehaviour
     {
-        public event Action<Floor> OnButtonClicked;
+        public event Action<int> OnButtonClicked;
 
         [field: SerializeField] public Animator DoorsAnimator { get; private set; }
         [field: SerializeField] public Transform ElevatorTarget { get; private set; }
@@ -20,6 +20,6 @@ namespace ElevatorTask
 
         public void SetFloorLevel(int level) => FloorLevel = level;
 
-        private void SendButtonClickInfo() => OnButtonClicked?.Invoke(this);
+        private void SendButtonClickInfo() => OnButtonClicked?.Invoke(FloorLevel);
     }
 }
