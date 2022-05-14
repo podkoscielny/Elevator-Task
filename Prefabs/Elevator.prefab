@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3503864157205820769}
   - component: {fileID: 1627953509}
+  - component: {fileID: 5698033067523850340}
   m_Layer: 0
   m_Name: Elevator
   m_TagString: Untagged
@@ -58,6 +59,18 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!114 &5698033067523850340
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 809290663282373033}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 361d19cafa107fc478af71abce69c82b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &8782295089731577193
 GameObject:
   m_ObjectHideFlags: 0

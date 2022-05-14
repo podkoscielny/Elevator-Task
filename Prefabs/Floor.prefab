@@ -986,6 +986,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   <DoorsAnimator>k__BackingField: {fileID: 1249390145009223022}
   <ElevatorTarget>k__BackingField: {fileID: 5718170542631974547}
+  floorButton: {fileID: 4848429037252648402}
 --- !u!1 &6733468404520197789
 GameObject:
   m_ObjectHideFlags: 0
@@ -2650,6 +2651,7 @@ GameObject:
   - component: {fileID: 3665235483339487244}
   - component: {fileID: 8163527680326623251}
   - component: {fileID: 1562466113765551879}
+  - component: {fileID: 4848429037252648402}
   m_Layer: 0
   m_Name: Button
   m_TagString: Untagged
@@ -2665,7 +2667,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7563094841443172399}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.066, y: 0.095, z: -0.037}
+  m_LocalPosition: {x: -0.0587, y: 0.095, z: -0.037}
   m_LocalScale: {x: 0.01, y: 0.1, z: 0.1}
   m_Children: []
   m_Father: {fileID: 7892434994247805232}
@@ -2733,6 +2735,18 @@ SphereCollider:
   serializedVersion: 2
   m_Radius: 0.5
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &4848429037252648402
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7563094841443172399}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fc4f7d7a10830ff4ca9e383e947f775a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &7768723968688498859
 GameObject:
   m_ObjectHideFlags: 0
