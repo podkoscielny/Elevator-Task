@@ -32,6 +32,8 @@ namespace ElevatorTask
 
         private void Start() => SetFloorLevels();
 
+        public void SetDoorsToClosed() => _areDoorsClosed = true; //Invoke after close_doors animation in Animation Event 
+
         private void MoveElevatorToPlayer(int targetLevel)
         {
             if (_isElevatorMoving) return;
@@ -64,6 +66,8 @@ namespace ElevatorTask
 
         private IEnumerator MoveElevatorCoroutine(Vector3 targetPosition, Animator doorsAnimator, int targetFloorLevel)
         {
+            yield return new WaitUntil(() => _areDoorsClosed);
+
             _isElevatorMoving = true;
 
             while (Vector3.Distance(transform.position, targetPosition) > 0.01f)
@@ -82,6 +86,8 @@ namespace ElevatorTask
 
         private void OpenTheDoor(Animator doorsAnimator)
         {
+            _areDoorsClosed = false;
+
             elevatorAnimator.SetTrigger("Open");
             doorsAnimator.SetTrigger("Open");
         }
