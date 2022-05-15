@@ -51,7 +51,7 @@ namespace ElevatorTask
             if (IsObjectsMaskCollidable(collidableObject.layer) && !collidablesBlockingDoors.Contains(collidableObject))
             {
                 collidablesBlockingDoors.Add(collidableObject);
-
+                Debug.Log(collidablesBlockingDoors.Count);
                 if (_areDoorsClosing)
                 {
                     _areDoorsClosing = false;
@@ -115,7 +115,6 @@ namespace ElevatorTask
             Animator currentFloorAnimator = floors[_currentElevatorLevel].DoorsAnimator;
 
             CloseTheDoor(currentFloorAnimator);
-            Debug.Log(collidablesBlockingDoors.Count);
 
             _isDestinationSet = true;
             Vector3 targetPosition = new Vector3(transform.position.x, targetFloor.ElevatorTarget.position.y, transform.position.z);
