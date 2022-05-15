@@ -8,6 +8,7 @@ namespace ElevatorTask
     public class ElevatorSystem : MonoBehaviour
     {
         [SerializeField] Animator elevatorAnimator;
+        [SerializeField] LayerMask collidableLayer;
         [SerializeField] ElevatorButton[] elevatorButtons;
         [SerializeField] Floor[] floors;
 
@@ -31,6 +32,18 @@ namespace ElevatorTask
         }
 
         private void Start() => SetFloorLevels();
+
+        private void OnTriggerEnter(Collider collider)
+        {
+            if (_isElevatorMoving || _areDoorsClosed) return;
+
+            if (IsObjectsMaskCollidable(collider.gameObject.layer))
+            {
+                Debug.Log("Collidable");
+            }
+        }
+
+        private bool IsObjectsMaskCollidable(int objectsLayer) => (collidableLayer.value & (1 << objectsLayer)) > 0;
 
         public void SetDoorsToClosed() => _areDoorsClosed = true; //Invoke after close_doors animation in Animation Event 
 
@@ -112,5 +125,7 @@ namespace ElevatorTask
 
             Array.Sort(floors, (x, y) => x.ElevatorTarget.position.y.CompareTo(y.ElevatorTarget.position.y));
         }
+
+
     }
 }
