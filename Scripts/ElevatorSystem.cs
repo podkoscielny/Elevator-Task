@@ -14,6 +14,8 @@ namespace ElevatorTask
 
         private bool _isElevatorMoving = false;
         private bool _areDoorsClosed = true;
+        private bool _areDoorsClosing = false;
+        private bool _isDestinationSet = false;
         private int _currentElevatorLevel = 0;
         private const float ELEVATOR_SPEED = 4f;
 
@@ -33,19 +35,39 @@ namespace ElevatorTask
 
         private void Start() => SetFloorLevels();
 
-        private void OnTriggerEnter(Collider collider)
+        private void OnTriggerStay(Collider collider)
         {
             if (_isElevatorMoving || _areDoorsClosed) return;
 
-            if (IsObjectsMaskCollidable(collider.gameObject.layer))
+            if (IsObjectsMaskCollidable(collider.gameObject.layer) && _areDoorsClosing)
             {
-                Debug.Log("Collidable");
+                _areDoorsClosing = false;
+
+                Floor currentFloor = floors[_currentElevatorLevel];
+                OpenTheDoor(currentFloor.DoorsAnimator);
+            }
+        }
+
+        private void OnTriggerExit(Collider collider)
+        {
+            if (_isElevatorMoving || _areDoorsClosed) return;
+
+            if (IsObjectsMaskCollidable(collider.gameObject.layer) && _isDestinationSet)
+            {
+                _areDoorsClosing = true;
+
+                Floor currentFloor = floors[_currentElevatorLevel];
+                CloseTheDoor(currentFloor.DoorsAnimator);
             }
         }
 
         private bool IsObjectsMaskCollidable(int objectsLayer) => (collidableLayer.value & (1 << objectsLayer)) > 0;
 
-        public void SetDoorsToClosed() => _areDoorsClosed = true; //Invoke after close_doors animation in Animation Event 
+        public void SetDoorsToClosed() //Invoke after close_doors animation in Animation Event 
+        {
+            _areDoorsClosing = false;
+            _areDoorsClosed = true; 
+        }
 
         private void MoveElevatorToPlayer(int targetLevel)
         {
@@ -59,6 +81,7 @@ namespace ElevatorTask
             }
             else
             {
+                _isDestinationSet = true;
                 Vector3 targetPosition = new Vector3(transform.position.x, targetFloor.ElevatorTarget.position.y, transform.position.z);
                 StartCoroutine(MoveElevatorCoroutine(targetPosition, targetFloor.DoorsAnimator, targetLevel));
             }
@@ -73,6 +96,7 @@ namespace ElevatorTask
 
             CloseTheDoor(currentFloorAnimator);
 
+            _isDestinationSet = true;
             Vector3 targetPosition = new Vector3(transform.position.x, targetFloor.ElevatorTarget.position.y, transform.position.z);
             StartCoroutine(MoveElevatorCoroutine(targetPosition, targetFloor.DoorsAnimator, targetLevel));
         }
@@ -95,6 +119,7 @@ namespace ElevatorTask
 
             _currentElevatorLevel = targetFloorLevel;
             _isElevatorMoving = false;
+            _isDestinationSet = false;
         }
 
         private void OpenTheDoor(Animator doorsAnimator)
@@ -107,6 +132,8 @@ namespace ElevatorTask
 
         private void CloseTheDoor(Animator doorsAnimator)
         {
+            _areDoorsClosing = true;
+
             elevatorAnimator.SetTrigger("Close");
             doorsAnimator.SetTrigger("Close");
         }
