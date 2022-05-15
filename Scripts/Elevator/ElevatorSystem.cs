@@ -51,7 +51,7 @@ namespace ElevatorTask
             if (IsObjectsMaskCollidable(collidableObject.layer) && !collidablesBlockingDoors.Contains(collidableObject))
             {
                 collidablesBlockingDoors.Add(collidableObject);
-                Debug.Log(collidablesBlockingDoors.Count);
+                
                 if (_areDoorsClosing)
                 {
                     _areDoorsClosing = false;
