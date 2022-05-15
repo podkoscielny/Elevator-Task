@@ -7,11 +7,11 @@ namespace ElevatorTask
     {
         public event Action<int> OnButtonClicked;
 
-        [SerializeField] private int targetElevatorLevel;
+        [field: SerializeField] public int TargetElevatorLevel;
 
         private void OnMouseDown()
         {
-            OnButtonClicked?.Invoke(targetElevatorLevel);
+            OnButtonClicked?.Invoke(TargetElevatorLevel);
         }
     }
 }

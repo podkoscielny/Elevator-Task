@@ -36,7 +36,11 @@ namespace ElevatorTask
             foreach (ElevatorButton button in elevatorButtons) button.OnButtonClicked -= MoveElevatorToFloor;
         }
 
-        private void Start() => SetFloorLevels();
+        private void Start()
+        {
+            SetFloorLevels();
+            EnableElevatorButtons();
+        }
 
         private void OnTriggerStay(Collider collider)
         {
@@ -162,6 +166,16 @@ namespace ElevatorTask
             for (int i = 0; i < floors.Length; i++)
             {
                 floors[i].SetFloorLevel(i);
+            }
+        }
+
+        private void EnableElevatorButtons()
+        {
+            foreach (ElevatorButton button in elevatorButtons)
+            {
+                bool setButtonToActive = button.TargetElevatorLevel <= floors.Length - 1;
+
+                button.gameObject.SetActive(setButtonToActive);
             }
         }
 
