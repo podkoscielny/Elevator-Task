@@ -12,10 +12,13 @@ namespace ElevatorTask
         [SerializeField] ElevatorButton[] elevatorButtons;
         [SerializeField] Floor[] floors;
 
+        private List<GameObject> collidablesBlockingDoors = new List<GameObject>();
+
         private bool _isElevatorMoving = false;
         private bool _areDoorsClosed = true;
         private bool _areDoorsClosing = false;
         private bool _isDestinationSet = false;
+
         private int _currentElevatorLevel = 0;
         private const float ELEVATOR_SPEED = 4f;
 
@@ -39,12 +42,19 @@ namespace ElevatorTask
         {
             if (_isElevatorMoving || _areDoorsClosed) return;
 
-            if (IsObjectsMaskCollidable(collider.gameObject.layer) && _areDoorsClosing)
-            {
-                _areDoorsClosing = false;
+            GameObject collidableObject = collider.gameObject;
 
-                Floor currentFloor = floors[_currentElevatorLevel];
-                OpenTheDoor(currentFloor.DoorsAnimator);
+            if (IsObjectsMaskCollidable(collidableObject.layer) && !collidablesBlockingDoors.Contains(collidableObject))
+            {
+                collidablesBlockingDoors.Add(collidableObject);
+
+                if (_areDoorsClosing)
+                {
+                    _areDoorsClosing = false;
+
+                    Floor currentFloor = floors[_currentElevatorLevel];
+                    OpenTheDoor(currentFloor.DoorsAnimator);
+                }
             }
         }
 
@@ -52,12 +62,17 @@ namespace ElevatorTask
         {
             if (_isElevatorMoving || _areDoorsClosed) return;
 
-            if (IsObjectsMaskCollidable(collider.gameObject.layer) && _isDestinationSet)
-            {
-                _areDoorsClosing = true;
+            GameObject collidableObject = collider.gameObject;
 
-                Floor currentFloor = floors[_currentElevatorLevel];
-                CloseTheDoor(currentFloor.DoorsAnimator);
+            if (IsObjectsMaskCollidable(collidableObject.layer))
+            {
+                if (collidablesBlockingDoors.Contains(collidableObject)) collidablesBlockingDoors.Remove(collidableObject);
+
+                if (_isDestinationSet)
+                {
+                    Floor currentFloor = floors[_currentElevatorLevel];
+                    CloseTheDoor(currentFloor.DoorsAnimator);
+                }
             }
         }
 
@@ -66,7 +81,7 @@ namespace ElevatorTask
         public void SetDoorsToClosed() //Invoke after close_doors animation in Animation Event 
         {
             _areDoorsClosing = false;
-            _areDoorsClosed = true; 
+            _areDoorsClosed = true;
         }
 
         private void MoveElevatorToPlayer(int targetLevel)
@@ -83,6 +98,7 @@ namespace ElevatorTask
             {
                 _isDestinationSet = true;
                 Vector3 targetPosition = new Vector3(transform.position.x, targetFloor.ElevatorTarget.position.y, transform.position.z);
+                CloseTheDoor(floors[_currentElevatorLevel].DoorsAnimator);
                 StartCoroutine(MoveElevatorCoroutine(targetPosition, targetFloor.DoorsAnimator, targetLevel));
             }
         }
@@ -95,6 +111,7 @@ namespace ElevatorTask
             Animator currentFloorAnimator = floors[_currentElevatorLevel].DoorsAnimator;
 
             CloseTheDoor(currentFloorAnimator);
+            Debug.Log(collidablesBlockingDoors.Count);
 
             _isDestinationSet = true;
             Vector3 targetPosition = new Vector3(transform.position.x, targetFloor.ElevatorTarget.position.y, transform.position.z);
@@ -132,6 +149,8 @@ namespace ElevatorTask
 
         private void CloseTheDoor(Animator doorsAnimator)
         {
+            if (collidablesBlockingDoors.Count > 0) return;
+
             _areDoorsClosing = true;
 
             elevatorAnimator.SetTrigger("Close");
@@ -152,7 +171,5 @@ namespace ElevatorTask
 
             Array.Sort(floors, (x, y) => x.ElevatorTarget.position.y.CompareTo(y.ElevatorTarget.position.y));
         }
-
-
     }
 }
