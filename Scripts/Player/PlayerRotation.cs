@@ -7,6 +7,7 @@ namespace ElevatorTask
     public class PlayerRotation : MonoBehaviour
     {
         [SerializeField] private Transform mainCamera;
+        [SerializeField] private Animator playerAnimator;
 
         private float _xRotation = 0f;
         private float _mouseSensitivity = 600f;
@@ -31,7 +32,11 @@ namespace ElevatorTask
 
         private void HandleBodyRotation()
         {
-            float mouseX = Input.GetAxis("Mouse X") * _mouseSensitivity * Time.deltaTime;
+            float mouseInputX = Input.GetAxisRaw("Mouse X");
+
+            float mouseX = mouseInputX * _mouseSensitivity * Time.deltaTime;
+
+            playerAnimator.SetFloat("Turn", Mathf.Clamp(mouseInputX, -1, 1));
 
             transform.Rotate(Vector3.up * mouseX);
         }
