@@ -192,6 +192,7 @@ MonoBehaviour:
     m_Bits: 64
   elevatorMoveSound: {fileID: 8300000, guid: dd8c411a1f323624d984145403733453, type: 3}
   doorOpenSound: {fileID: 8300000, guid: c0781978b505c4944bf7c3fbadde0fe2, type: 3}
+  doorbellSound: {fileID: 8300000, guid: 622394e4f76cee64ba2c498bbebe7645, type: 3}
   elevatorButtons:
   - {fileID: 7744952452737182210}
   - {fileID: 43272943421452042}

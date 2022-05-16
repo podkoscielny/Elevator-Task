@@ -10,8 +10,12 @@ namespace ElevatorTask
         [SerializeField] Animator elevatorAnimator;
         [SerializeField] AudioSource elevatorAudio;
         [SerializeField] LayerMask collidableLayer;
+
+        [Header("AudioClips")]
         [SerializeField] AudioClip elevatorMoveSound;
         [SerializeField] AudioClip doorOpenSound;
+        [SerializeField] AudioClip doorbellSound;
+
         [SerializeField] ElevatorButton[] elevatorButtons;
         [SerializeField] Floor[] floors;
 
@@ -54,7 +58,7 @@ namespace ElevatorTask
             if (IsObjectsMaskCollidable(collidableObject.layer) && !collidablesBlockingDoors.Contains(collidableObject))
             {
                 collidablesBlockingDoors.Add(collidableObject);
-                
+
                 if (_areDoorsClosing)
                 {
                     _areDoorsClosing = false;
@@ -99,7 +103,7 @@ namespace ElevatorTask
 
             if (targetLevel == _currentElevatorLevel)
             {
-                OpenTheDoor(targetFloor.DoorsAnimator);
+                StartCoroutine(OpenDoorWithDoorbell(targetFloor.DoorsAnimator));
             }
             else
             {
@@ -142,14 +146,36 @@ namespace ElevatorTask
                 yield return null;
             }
 
+            float timeElapsed = 0f;
+            float lerpDuration = 100f;
+
+            while (elevatorAudio.volume > 0.01f)
+            {
+                elevatorAudio.volume = Mathf.Lerp(elevatorAudio.volume, 0, timeElapsed / lerpDuration);
+                timeElapsed += Time.deltaTime;
+
+                yield return null;
+            }
+
             elevatorAudio.loop = false;
+            elevatorAudio.volume = 1f;
             elevatorAudio.Stop();
 
-            OpenTheDoor(doorsAnimator);
+            StartCoroutine(OpenDoorWithDoorbell(doorsAnimator));
 
             _currentElevatorLevel = targetFloorLevel;
             _isElevatorMoving = false;
             _isDestinationSet = false;
+        }
+
+        private IEnumerator OpenDoorWithDoorbell(Animator doorsAnimator)
+        {
+            elevatorAudio.clip = doorbellSound;
+            elevatorAudio.Play();
+
+            yield return new WaitForSeconds(1f);
+
+            OpenTheDoor(doorsAnimator);
         }
 
         private void OpenTheDoor(Animator doorsAnimator)
