@@ -8,16 +8,17 @@ namespace ElevatorTask
     {
         [SerializeField] private Transform mainCamera;
         [SerializeField] private Animator playerAnimator;
+        [SerializeField] private Rigidbody playerRb;
 
         private float _xRotation = 0f;
-        private float _mouseSensitivity = 600f;
+        private float _mouseSensitivity = 300f;
 
         private const float Y_ROTATION_RANGE = 80f;
 
         private void Update()
         {
-            HandleBodyRotation();
             HandleHeadRotation();
+            HandleBodyRotation();
         }
 
         private void HandleHeadRotation()
@@ -33,12 +34,10 @@ namespace ElevatorTask
         private void HandleBodyRotation()
         {
             float mouseInputX = Input.GetAxisRaw("Mouse X");
-
             float mouseX = mouseInputX * _mouseSensitivity * Time.deltaTime;
 
-            playerAnimator.SetFloat("Turn", Mathf.Clamp(mouseInputX, -1, 1));
-
-            transform.Rotate(Vector3.up * mouseX);
+            Vector3 targetRotation = playerRb.rotation.eulerAngles + (Vector3.up * mouseX);
+            playerRb.MoveRotation(Quaternion.Euler(targetRotation));
         }
     }
 }

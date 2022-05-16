@@ -25,15 +25,15 @@ namespace ElevatorTask
 
         private void AddGravityToPlayer()
         {
-            _playerVelocity.y += GRAVITY * _gravityMultiplier;
-            characterController.Move(Time.deltaTime * _playerVelocity);
+            _playerVelocity.y += GRAVITY * _gravityMultiplier * Time.deltaTime;
+            characterController.Move(_playerVelocity * Time.deltaTime);
         }
 
         private void CheckBeingGrounded()
         {
             _isGrounded = Physics.CheckSphere(groundCheck.position, GROUND_CHECK_RADIUS, groundLayer);
 
-            if (_isGrounded) _playerVelocity.y = 0f;
+            if (_isGrounded && _playerVelocity.y < 0) _playerVelocity.y = 0f;
         }
     }
 }

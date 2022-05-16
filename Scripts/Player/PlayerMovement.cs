@@ -7,25 +7,49 @@ namespace ElevatorTask
     public class PlayerMovement : MonoBehaviour
     {
         [SerializeField] private Animator playerAnimator;
-        [SerializeField] private CharacterController characterController;
+        [SerializeField] private Rigidbody playerRb;
 
-        private const float MOVEMENT_SPEED = 2.5f;
+        private float _verticalMovement;
+        private float _horizontalMovement;
 
-        private void Update() => MovePlayer();
+        private const float MOVEMENT_SPEED = 120f;
+
+        private void Update()
+        {
+            GetMovementInput();
+            SetPlayerMovementAnimation();
+        }
+
+        private void FixedUpdate() => MovePlayer();
 
         private void MovePlayer()
         {
-            float horizontalMovement = Input.GetAxisRaw("Horizontal");
-            float verticalMovement = Input.GetAxisRaw("Vertical");
+            ResetMovementVelocity();
 
-            Vector2 movement = new Vector2(horizontalMovement, verticalMovement).normalized;
-            Vector3 direction = transform.right * horizontalMovement + transform.forward * verticalMovement;
+            Vector3 direction = transform.right * _horizontalMovement + transform.forward * _verticalMovement;
+
+            playerRb.AddForce(MOVEMENT_SPEED * direction);
+        }
+
+        private void GetMovementInput()
+        {
+            _horizontalMovement = Input.GetAxisRaw("Horizontal");
+            _verticalMovement = Input.GetAxisRaw("Vertical");
+        }
+
+        private void SetPlayerMovementAnimation()
+        {
+            Vector2 movement = new Vector2(_horizontalMovement, _verticalMovement).normalized;
 
             playerAnimator.SetFloat("Movement", movement.magnitude);
-            playerAnimator.SetFloat("MovementX", horizontalMovement);
-            playerAnimator.SetFloat("MovementY", verticalMovement);
+            playerAnimator.SetFloat("MovementX", _horizontalMovement);
+            playerAnimator.SetFloat("MovementY", _verticalMovement);
+        }
 
-            characterController.Move(MOVEMENT_SPEED * Time.deltaTime * direction);
+        private void ResetMovementVelocity()
+        {
+            Vector3 playerVelocity = playerRb.velocity;
+            playerRb.velocity = new Vector3(0, playerVelocity.y, 0);
         }
     }
 }
