@@ -64,7 +64,7 @@ namespace ElevatorTask
                     _areDoorsClosing = false;
 
                     Floor currentFloor = floors[_currentElevatorLevel];
-                    OpenTheDoor(currentFloor.DoorsAnimator);
+                    OpenTheDoor(currentFloor.DoorsAnimator, true);
                 }
             }
         }
@@ -82,7 +82,7 @@ namespace ElevatorTask
                 if (_isDestinationSet)
                 {
                     Floor currentFloor = floors[_currentElevatorLevel];
-                    CloseTheDoor(currentFloor.DoorsAnimator);
+                    CloseTheDoor(currentFloor.DoorsAnimator, true);
                 }
             }
         }
@@ -178,18 +178,28 @@ namespace ElevatorTask
             OpenTheDoor(doorsAnimator);
         }
 
-        private void OpenTheDoor(Animator doorsAnimator)
+        private void OpenTheDoor(Animator doorsAnimator, bool invokeThroughPhotoCell = false)
         {
             _areDoorsClosed = false;
 
             elevatorAudio.clip = doorOpenSound;
             elevatorAudio.Play();
 
-            elevatorAnimator.SetTrigger("Open");
-            doorsAnimator.SetTrigger("Open");
+            if (invokeThroughPhotoCell)
+            {
+                float transitionOffset = 1 - elevatorAnimator.GetCurrentAnimatorStateInfo(0).normalizedTime;
+
+                elevatorAnimator.CrossFade("open_doors", 0, 0, transitionOffset);
+                doorsAnimator.CrossFade("open_doors", 0, 0, transitionOffset);
+            }
+            else
+            {
+                elevatorAnimator.SetTrigger("Open");
+                doorsAnimator.SetTrigger("Open");
+            }
         }
 
-        private void CloseTheDoor(Animator doorsAnimator)
+        private void CloseTheDoor(Animator doorsAnimator, bool invokeThroughPhotoCell = false)
         {
             if (collidablesBlockingDoors.Count > 0) return;
 
@@ -198,8 +208,18 @@ namespace ElevatorTask
             elevatorAudio.clip = doorOpenSound;
             elevatorAudio.Play();
 
-            elevatorAnimator.SetTrigger("Close");
-            doorsAnimator.SetTrigger("Close");
+            if (invokeThroughPhotoCell)
+            {
+                float transitionOffset = 1 - elevatorAnimator.GetCurrentAnimatorStateInfo(0).normalizedTime;
+                
+                elevatorAnimator.CrossFade("close_doors", 0, 0, transitionOffset);
+                doorsAnimator.CrossFade("close_doors", 0, 0, transitionOffset);
+            }
+            else
+            {
+                elevatorAnimator.SetTrigger("Close");
+                doorsAnimator.SetTrigger("Close");
+            }
         }
 
         private void SetFloorLevels()
