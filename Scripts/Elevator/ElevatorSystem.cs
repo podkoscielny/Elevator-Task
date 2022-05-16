@@ -8,7 +8,10 @@ namespace ElevatorTask
     public class ElevatorSystem : MonoBehaviour
     {
         [SerializeField] Animator elevatorAnimator;
+        [SerializeField] AudioSource elevatorAudio;
         [SerializeField] LayerMask collidableLayer;
+        [SerializeField] AudioClip elevatorMoveSound;
+        [SerializeField] AudioClip doorOpenSound;
         [SerializeField] ElevatorButton[] elevatorButtons;
         [SerializeField] Floor[] floors;
 
@@ -127,6 +130,10 @@ namespace ElevatorTask
 
             _isElevatorMoving = true;
 
+            elevatorAudio.loop = true;
+            elevatorAudio.clip = elevatorMoveSound;
+            elevatorAudio.Play();
+
             while (Vector3.Distance(transform.position, targetPosition) > 0.01f)
             {
                 float step = ELEVATOR_SPEED * Time.deltaTime;
@@ -134,6 +141,9 @@ namespace ElevatorTask
 
                 yield return null;
             }
+
+            elevatorAudio.loop = false;
+            elevatorAudio.Stop();
 
             OpenTheDoor(doorsAnimator);
 
@@ -146,6 +156,9 @@ namespace ElevatorTask
         {
             _areDoorsClosed = false;
 
+            elevatorAudio.clip = doorOpenSound;
+            elevatorAudio.Play();
+
             elevatorAnimator.SetTrigger("Open");
             doorsAnimator.SetTrigger("Open");
         }
@@ -155,6 +168,9 @@ namespace ElevatorTask
             if (collidablesBlockingDoors.Count > 0) return;
 
             _areDoorsClosing = true;
+
+            elevatorAudio.clip = doorOpenSound;
+            elevatorAudio.Play();
 
             elevatorAnimator.SetTrigger("Close");
             doorsAnimator.SetTrigger("Close");

@@ -31,12 +31,6 @@ namespace ElevatorTask
             playerRb.AddForce(MOVEMENT_SPEED * direction);
         }
 
-        private void GetMovementInput()
-        {
-            _horizontalMovement = Input.GetAxisRaw("Horizontal");
-            _verticalMovement = Input.GetAxisRaw("Vertical");
-        }
-
         private void SetPlayerMovementAnimation()
         {
             Vector2 movement = new Vector2(_horizontalMovement, _verticalMovement).normalized;
@@ -44,6 +38,12 @@ namespace ElevatorTask
             playerAnimator.SetFloat("Movement", movement.magnitude);
             playerAnimator.SetFloat("MovementX", _horizontalMovement);
             playerAnimator.SetFloat("MovementY", _verticalMovement);
+        }
+
+        private void GetMovementInput()
+        {
+            _horizontalMovement = Input.GetAxisRaw("Horizontal");
+            _verticalMovement = Input.GetAxisRaw("Vertical");
         }
 
         private void ResetMovementVelocity()

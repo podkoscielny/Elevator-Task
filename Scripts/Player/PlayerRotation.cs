@@ -11,7 +11,8 @@ namespace ElevatorTask
         [SerializeField] private Rigidbody playerRb;
 
         private float _xRotation = 0f;
-        private float _mouseSensitivity = 300f;
+        private float _mouseSensitivityX = 500f;
+        private float _mouseSensitivityY = 300f;
 
         private const float Y_ROTATION_RANGE = 80f;
 
@@ -23,7 +24,7 @@ namespace ElevatorTask
 
         private void HandleHeadRotation()
         {
-            float mouseY = Input.GetAxis("Mouse Y") * _mouseSensitivity * Time.deltaTime;
+            float mouseY = Input.GetAxis("Mouse Y") * _mouseSensitivityY * Time.deltaTime;
 
             _xRotation -= mouseY;
             _xRotation = Mathf.Clamp(_xRotation, -Y_ROTATION_RANGE, Y_ROTATION_RANGE);
@@ -34,10 +35,9 @@ namespace ElevatorTask
         private void HandleBodyRotation()
         {
             float mouseInputX = Input.GetAxisRaw("Mouse X");
-            float mouseX = mouseInputX * _mouseSensitivity * Time.deltaTime;
+            float mouseX = mouseInputX * _mouseSensitivityX * Time.deltaTime;
 
-            Vector3 targetRotation = playerRb.rotation.eulerAngles + (Vector3.up * mouseX);
-            playerRb.MoveRotation(Quaternion.Euler(targetRotation));
+            transform.Rotate(mouseX * Vector3.up);
         }
     }
 }
