@@ -103,7 +103,7 @@ namespace ElevatorTask
 
             if (targetLevel == _currentElevatorLevel)
             {
-                StartCoroutine(OpenDoorWithDoorbell(targetFloor.DoorsAnimator));
+                if (_areDoorsClosed) StartCoroutine(OpenDoorWithDoorbell(targetFloor.DoorsAnimator));
             }
             else
             {
