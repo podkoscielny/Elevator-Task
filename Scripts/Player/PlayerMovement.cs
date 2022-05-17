@@ -6,8 +6,8 @@ namespace ElevatorTask
 {
     public class PlayerMovement : MonoBehaviour
     {
-        [SerializeField] private Animator playerAnimator;
-        [SerializeField] private Rigidbody playerRb;
+        [SerializeField] Animator playerAnimator;
+        [SerializeField] Rigidbody playerRb;
 
         private float _verticalMovement;
         private float _horizontalMovement;

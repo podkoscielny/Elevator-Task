@@ -6,9 +6,9 @@ namespace ElevatorTask
 {
     public class PlayerGravity : MonoBehaviour
     {
-        [SerializeField] private Transform groundCheck;
-        [SerializeField] private LayerMask groundLayer;
-        [SerializeField] private CharacterController characterController;
+        [SerializeField] Transform groundCheck;
+        [SerializeField] LayerMask groundLayer;
+        [SerializeField] CharacterController characterController;
 
         private Vector3 _playerVelocity;
         private bool _isGrounded;

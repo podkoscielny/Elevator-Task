@@ -6,9 +6,9 @@ namespace ElevatorTask
 {
     public class PlayerRotation : MonoBehaviour
     {
-        [SerializeField] private Transform mainCamera;
-        [SerializeField] private Animator playerAnimator;
-        [SerializeField] private Rigidbody playerRb;
+        [SerializeField] Transform mainCamera;
+        [SerializeField] Animator playerAnimator;
+        [SerializeField] Rigidbody playerRb;
 
         private float _xRotation = 0f;
         private float _mouseSensitivityX = 500f;

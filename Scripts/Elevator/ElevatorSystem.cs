@@ -77,11 +77,11 @@ namespace ElevatorTask
 
             GameObject collidableObject = collider.gameObject;
 
-            if (IsObjectsMaskCollidable(collidableObject.layer))
+            if (IsObjectsMaskCollidable(collidableObject.layer) && collidablesBlockingDoors.Contains(collidableObject))
             {
-                if (collidablesBlockingDoors.Contains(collidableObject)) collidablesBlockingDoors.Remove(collidableObject);
+                collidablesBlockingDoors.Remove(collidableObject);
 
-                if (_isDestinationSet)
+                if (_isDestinationSet && collidablesBlockingDoors.Count == 0)
                 {
                     Floor currentFloor = floors[_currentElevatorLevel];
                     CloseTheDoor(currentFloor.DoorsAnimator, true);
@@ -112,7 +112,7 @@ namespace ElevatorTask
                 _isDestinationSet = true;
                 Vector3 targetPosition = new Vector3(transform.position.x, targetFloor.ElevatorTarget.position.y, transform.position.z);
                 CloseTheDoor(floors[_currentElevatorLevel].DoorsAnimator);
-                StartCoroutine(MoveElevatorCoroutine(targetPosition, targetFloor.DoorsAnimator, targetLevel));
+                StartCoroutine(MoveElevatorCoroutine(targetPosition, targetLevel));
             }
         }
 
@@ -127,10 +127,10 @@ namespace ElevatorTask
 
             _isDestinationSet = true;
             Vector3 targetPosition = new Vector3(transform.position.x, targetFloor.ElevatorTarget.position.y, transform.position.z);
-            StartCoroutine(MoveElevatorCoroutine(targetPosition, targetFloor.DoorsAnimator, targetLevel));
+            StartCoroutine(MoveElevatorCoroutine(targetPosition, targetLevel));
         }
 
-        private IEnumerator MoveElevatorCoroutine(Vector3 targetPosition, Animator doorsAnimator, int targetFloorLevel)
+        private IEnumerator MoveElevatorCoroutine(Vector3 targetPosition, int targetFloorLevel)
         {
             yield return new WaitUntil(() => _areDoorsClosed);
 
@@ -161,18 +161,10 @@ namespace ElevatorTask
 
             OnDoorsMoved?.Invoke();
 
-            if (invokeThroughPhotoCell)
-            {
-                float transitionOffset = 1 - elevatorAnimator.GetCurrentAnimatorStateInfo(0).normalizedTime;
+            float transitionOffset = invokeThroughPhotoCell ? 1 - elevatorAnimator.GetCurrentAnimatorStateInfo(0).normalizedTime : 0;
 
-                elevatorAnimator.CrossFade("open_doors", 0, 0, transitionOffset);
-                doorsAnimator.CrossFade("open_doors", 0, 0, transitionOffset);
-            }
-            else
-            {
-                elevatorAnimator.SetTrigger("Open");
-                doorsAnimator.SetTrigger("Open");
-            }
+            elevatorAnimator.CrossFade("open_doors", 0, 0, transitionOffset);
+            doorsAnimator.CrossFade("open_doors", 0, 0, transitionOffset);
         }
 
         private void CloseTheDoor(Animator doorsAnimator, bool invokeThroughPhotoCell = false)
@@ -183,18 +175,10 @@ namespace ElevatorTask
 
             OnDoorsMoved?.Invoke();
 
-            if (invokeThroughPhotoCell)
-            {
-                float transitionOffset = 1 - elevatorAnimator.GetCurrentAnimatorStateInfo(0).normalizedTime;
-                
-                elevatorAnimator.CrossFade("close_doors", 0, 0, transitionOffset);
-                doorsAnimator.CrossFade("close_doors", 0, 0, transitionOffset);
-            }
-            else
-            {
-                elevatorAnimator.SetTrigger("Close");
-                doorsAnimator.SetTrigger("Close");
-            }
+            float transitionOffset = invokeThroughPhotoCell ? 1 - elevatorAnimator.GetCurrentAnimatorStateInfo(0).normalizedTime : 0;
+
+            elevatorAnimator.CrossFade("close_doors", 0, 0, transitionOffset);
+            doorsAnimator.CrossFade("close_doors", 0, 0, transitionOffset);
         }
 
         private void SetFloorLevels()

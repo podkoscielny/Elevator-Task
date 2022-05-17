@@ -10,7 +10,7 @@ namespace ElevatorTask
         [field: SerializeField] public Animator DoorsAnimator { get; private set; }
         [field: SerializeField] public Transform ElevatorTarget { get; private set; }
 
-        [SerializeField] private FloorButton floorButton;
+        [SerializeField] FloorButton floorButton;
 
         public int FloorLevel { get; private set; }
 
