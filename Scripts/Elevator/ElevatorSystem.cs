@@ -65,7 +65,7 @@ namespace ElevatorTask
             SetInitialElevatorPosition();
         }
 
-        private void OnTriggerStay(Collider collider)
+        private void OnTriggerEnter(Collider collider)
         {
             if (_isElevatorMoving || _areDoorsClosed) return;
 
