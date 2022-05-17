@@ -7,10 +7,22 @@ namespace ElevatorTask
 {
     public class ElevatorSystem : MonoBehaviour
     {
+        public event Action<int> OnElevatorLevelChanged;
         public event Action OnElevatorMovementStarted;
         public event Action OnElevatorMovementEnded;
         public event Action OnElevatorDoorsOpened;
         public event Action OnDoorsMoved;
+
+        public int CurrentElevatorLevel
+        {
+            get => _currentElevatorLevel;
+
+            private set
+            {
+                _currentElevatorLevel = value;
+                OnElevatorLevelChanged?.Invoke(value);
+            }
+        }
 
         [SerializeField] Animator elevatorAnimator;
         [SerializeField] LayerMask collidableLayer;
@@ -67,7 +79,7 @@ namespace ElevatorTask
                 {
                     _areDoorsClosing = false;
 
-                    Floor currentFloor = floors[_currentElevatorLevel];
+                    Floor currentFloor = floors[CurrentElevatorLevel];
                     OpenTheDoor(currentFloor.DoorsAnimator);
                 }
             }
@@ -85,7 +97,7 @@ namespace ElevatorTask
 
                 if (_isDestinationSet && collidablesBlockingDoors.Count == 0)
                 {
-                    Floor currentFloor = floors[_currentElevatorLevel];
+                    Floor currentFloor = floors[CurrentElevatorLevel];
                     CloseTheDoor(currentFloor.DoorsAnimator);
                 }
             }
@@ -107,9 +119,7 @@ namespace ElevatorTask
                 return;
             }
 
-            Floor targetFloor = floors[targetLevel];
-
-            if (targetLevel == _currentElevatorLevel)
+            if (targetLevel == CurrentElevatorLevel)
             {
                 if (_areDoorsClosed)
                 {
@@ -122,33 +132,34 @@ namespace ElevatorTask
             else
             {
                 _isDestinationSet = true;
-                Vector3 targetPosition = new Vector3(transform.position.x, targetFloor.ElevatorTarget.position.y, transform.position.z);
-                CloseTheDoor(floors[_currentElevatorLevel].DoorsAnimator);
+                Vector3 targetPosition = new Vector3(transform.position.x, floors[targetLevel].ElevatorTarget.position.y, transform.position.z);
+                CloseTheDoor(floors[CurrentElevatorLevel].DoorsAnimator);
                 StartCoroutine(MoveElevatorCoroutine(targetPosition, targetLevel));
             }
         }
 
         private void MoveElevatorToFloor(int targetLevel, ButtonSound buttonSound)
         {
-            if (targetLevel == _currentElevatorLevel || _isElevatorMoving || _isDestinationSet)
+            if (targetLevel == CurrentElevatorLevel || _isElevatorMoving || _isDestinationSet)
             {
                 buttonSound.PlayBuzzerSound();
                 return;
             }
 
-            Floor targetFloor = floors[targetLevel];
-            Animator currentFloorAnimator = floors[_currentElevatorLevel].DoorsAnimator;
+            Animator currentFloorAnimator = floors[CurrentElevatorLevel].DoorsAnimator;
 
             CloseTheDoor(currentFloorAnimator);
 
             _isDestinationSet = true;
-            Vector3 targetPosition = new Vector3(transform.position.x, targetFloor.ElevatorTarget.position.y, transform.position.z);
+            Vector3 targetPosition = new Vector3(transform.position.x, floors[targetLevel].ElevatorTarget.position.y, transform.position.z);
             StartCoroutine(MoveElevatorCoroutine(targetPosition, targetLevel));
         }
 
         private IEnumerator MoveElevatorCoroutine(Vector3 targetPosition, int targetFloorLevel)
         {
             yield return new WaitUntil(() => _areDoorsClosed);
+
+            int levelDifference = targetFloorLevel - CurrentElevatorLevel;
 
             _isElevatorMoving = true;
 
@@ -158,20 +169,43 @@ namespace ElevatorTask
             {
                 float step = ELEVATOR_SPEED * Time.deltaTime;
                 transform.position = Vector3.MoveTowards(transform.position, targetPosition, step);
+                CheckElevatorLevel(targetFloorLevel);
 
                 yield return null;
             }
 
             OnElevatorMovementEnded.Invoke();
 
-            _currentElevatorLevel = targetFloorLevel;
+            CurrentElevatorLevel = targetFloorLevel;
             _isElevatorMoving = false;
+        }
+
+        private void CheckElevatorLevel(int targetLevel)
+        {
+            if (targetLevel == CurrentElevatorLevel) return;
+
+            int levelDifference = targetLevel - CurrentElevatorLevel;
+
+            if (levelDifference > 0)
+            {
+                int nextLevelIndex = CurrentElevatorLevel + 1;
+                float nextLevelYPositon = floors[nextLevelIndex].ElevatorTarget.position.y;
+
+                if (transform.position.y >= nextLevelYPositon) CurrentElevatorLevel = nextLevelIndex;
+            }
+            else
+            {
+                int nextLevelIndex = CurrentElevatorLevel - 1;
+                float nextLevelYPositon = floors[nextLevelIndex].ElevatorTarget.position.y;
+
+                if (transform.position.y <= nextLevelYPositon) CurrentElevatorLevel = nextLevelIndex;
+            }
         }
 
         private void OpenDoorAfterDoorbell()
         {
             _isDestinationSet = false;
-            OpenTheDoor(floors[_currentElevatorLevel].DoorsAnimator);
+            OpenTheDoor(floors[CurrentElevatorLevel].DoorsAnimator);
         }
 
         private void OpenTheDoor(Animator doorsAnimator)

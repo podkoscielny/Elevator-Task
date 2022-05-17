@@ -351,7 +351,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6504694892573987290}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 2.4173517, y: 1.0649445, z: -0.029129088}
+  m_LocalPosition: {x: 1.81, y: 1.0649445, z: -0.029129088}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 3503864157205820769}
@@ -368,12 +368,12 @@ ReflectionProbe:
   serializedVersion: 2
   m_Type: 0
   m_Mode: 1
-  m_RefreshMode: 1
+  m_RefreshMode: 0
   m_TimeSlicingMode: 0
-  m_Resolution: 2048
+  m_Resolution: 128
   m_UpdateFrequency: 0
-  m_BoxSize: {x: 4.162265, y: 3.1232831, z: 3.798108}
-  m_BoxOffset: {x: -2.0811324, y: 0.53190315, z: -0.040294886}
+  m_BoxSize: {x: 3.9612236, y: 2.960133, z: 3.798108}
+  m_BoxOffset: {x: -1.602767, y: 0.4503281, z: -0.040294886}
   m_NearClip: 0.3
   m_FarClip: 1000
   m_ShadowDistance: 100
@@ -1021,7 +1021,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   collidableLayer:
     serializedVersion: 2
-    m_Bits: 64
+    m_Bits: 192
 --- !u!1 &8782295091579651463
 GameObject:
   m_ObjectHideFlags: 0
