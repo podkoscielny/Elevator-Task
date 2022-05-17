@@ -344,8 +344,8 @@ ReflectionProbe:
   m_TimeSlicingMode: 0
   m_Resolution: 128
   m_UpdateFrequency: 0
-  m_BoxSize: {x: 21.056643, y: 24.88749, z: 20.716404}
-  m_BoxOffset: {x: -5.620448, y: 8.208597, z: -1.1281471}
+  m_BoxSize: {x: 20.899572, y: 24.88749, z: 20.716404}
+  m_BoxOffset: {x: -5.698983, y: 8.208597, z: -1.1281471}
   m_NearClip: 0.3
   m_FarClip: 1000
   m_ShadowDistance: 100
@@ -357,7 +357,7 @@ ReflectionProbe:
   m_IntensityMultiplier: 1
   m_BlendDistance: 1
   m_HDR: 1
-  m_BoxProjection: 1
+  m_BoxProjection: 0
   m_RenderDynamicObjects: 0
   m_UseOcclusionCulling: 1
   m_Importance: 1
@@ -643,9 +643,17 @@ PrefabInstance:
       propertyPath: m_Name
       value: Elevator
       objectReference: {fileID: 0}
+    - target: {fileID: 2307749226624195598, guid: 1e44195df7f6abc4f884460864627f82, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 1.81
+      objectReference: {fileID: 0}
     - target: {fileID: 2569249672216587801, guid: 1e44195df7f6abc4f884460864627f82, type: 3}
       propertyPath: m_BoxSize.x
-      value: 4.1532784
+      value: 3.9612236
+      objectReference: {fileID: 0}
+    - target: {fileID: 2569249672216587801, guid: 1e44195df7f6abc4f884460864627f82, type: 3}
+      propertyPath: m_BoxSize.y
+      value: 2.960133
       objectReference: {fileID: 0}
     - target: {fileID: 2569249672216587801, guid: 1e44195df7f6abc4f884460864627f82, type: 3}
       propertyPath: m_Resolution
@@ -653,7 +661,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2569249672216587801, guid: 1e44195df7f6abc4f884460864627f82, type: 3}
       propertyPath: m_BoxOffset.x
-      value: -2.0766392
+      value: -1.602767
+      objectReference: {fileID: 0}
+    - target: {fileID: 2569249672216587801, guid: 1e44195df7f6abc4f884460864627f82, type: 3}
+      propertyPath: m_BoxOffset.y
+      value: 0.4503281
       objectReference: {fileID: 0}
     - target: {fileID: 2569249672216587801, guid: 1e44195df7f6abc4f884460864627f82, type: 3}
       propertyPath: m_RefreshMode
@@ -719,6 +731,10 @@ PrefabInstance:
       propertyPath: floors.Array.data[2]
       value: 
       objectReference: {fileID: 1669995916}
+    - target: {fileID: 6504694892573987290, guid: 1e44195df7f6abc4f884460864627f82, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 1e44195df7f6abc4f884460864627f82, type: 3}
 --- !u!114 &1669995916 stripped

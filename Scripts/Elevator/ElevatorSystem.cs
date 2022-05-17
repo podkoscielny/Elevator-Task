@@ -49,6 +49,7 @@ namespace ElevatorTask
         {
             SetFloorLevels();
             EnableElevatorButtons();
+            SetInitialElevatorPosition();
         }
 
         private void OnTriggerStay(Collider collider)
@@ -105,7 +106,11 @@ namespace ElevatorTask
 
             if (targetLevel == _currentElevatorLevel)
             {
-                if (_areDoorsClosed) OnElevatorDoorsOpened?.Invoke();
+                if (_areDoorsClosed)
+                {
+                    _areDoorsClosed = false;
+                    OnElevatorDoorsOpened?.Invoke();
+                }
             }
             else
             {
@@ -197,6 +202,14 @@ namespace ElevatorTask
 
                 button.gameObject.SetActive(setButtonToActive);
             }
+        }
+
+        private void SetInitialElevatorPosition()
+        {
+            float firstFloorPositionY = floors[0].ElevatorTarget.position.y;
+            Vector3 targetPosition = new Vector3(transform.position.x, firstFloorPositionY, transform.position.z);
+
+            transform.position = targetPosition;
         }
 
         private void SortFloorsByHeight()
