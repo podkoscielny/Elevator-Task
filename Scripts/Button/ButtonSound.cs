@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace ElevatorTask
 {
-    public class ButtonSound : MonoBehaviour
+    public abstract class ButtonSound : MonoBehaviour
     {
         [SerializeField] AudioSource buttonAudio;
         [SerializeField] AudioClip clickSound;

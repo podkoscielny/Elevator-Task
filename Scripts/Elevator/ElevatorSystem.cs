@@ -68,7 +68,7 @@ namespace ElevatorTask
                     _areDoorsClosing = false;
 
                     Floor currentFloor = floors[_currentElevatorLevel];
-                    OpenTheDoor(currentFloor.DoorsAnimator, true);
+                    OpenTheDoor(currentFloor.DoorsAnimator);
                 }
             }
         }
@@ -86,7 +86,7 @@ namespace ElevatorTask
                 if (_isDestinationSet && collidablesBlockingDoors.Count == 0)
                 {
                     Floor currentFloor = floors[_currentElevatorLevel];
-                    CloseTheDoor(currentFloor.DoorsAnimator, true);
+                    CloseTheDoor(currentFloor.DoorsAnimator);
                 }
             }
         }
@@ -166,24 +166,28 @@ namespace ElevatorTask
 
             _currentElevatorLevel = targetFloorLevel;
             _isElevatorMoving = false;
-            _isDestinationSet = false;
         }
 
-        private void OpenDoorAfterDoorbell() => OpenTheDoor(floors[_currentElevatorLevel].DoorsAnimator);
+        private void OpenDoorAfterDoorbell()
+        {
+            _isDestinationSet = false;
+            OpenTheDoor(floors[_currentElevatorLevel].DoorsAnimator);
+        }
 
-        private void OpenTheDoor(Animator doorsAnimator, bool invokeThroughPhotoCell = false)
+        private void OpenTheDoor(Animator doorsAnimator)
         {
             _areDoorsClosed = false;
 
             OnDoorsMoved?.Invoke();
 
-            float transitionOffset = invokeThroughPhotoCell ? 1 - elevatorAnimator.GetCurrentAnimatorStateInfo(0).normalizedTime : 0;
+            float stateNormalizedTime = Mathf.Min(1, elevatorAnimator.GetCurrentAnimatorStateInfo(0).normalizedTime);
+            float transitionOffset = 1 - stateNormalizedTime;
 
             elevatorAnimator.CrossFade("open_doors", 0, 0, transitionOffset);
             doorsAnimator.CrossFade("open_doors", 0, 0, transitionOffset);
         }
 
-        private void CloseTheDoor(Animator doorsAnimator, bool invokeThroughPhotoCell = false)
+        private void CloseTheDoor(Animator doorsAnimator)
         {
             if (collidablesBlockingDoors.Count > 0) return;
 
@@ -191,7 +195,8 @@ namespace ElevatorTask
 
             OnDoorsMoved?.Invoke();
 
-            float transitionOffset = invokeThroughPhotoCell ? 1 - elevatorAnimator.GetCurrentAnimatorStateInfo(0).normalizedTime : 0;
+            float stateNormalizedTime = Mathf.Min(1, elevatorAnimator.GetCurrentAnimatorStateInfo(0).normalizedTime);
+            float transitionOffset = 1 - stateNormalizedTime;
 
             elevatorAnimator.CrossFade("close_doors", 0, 0, transitionOffset);
             doorsAnimator.CrossFade("close_doors", 0, 0, transitionOffset);
