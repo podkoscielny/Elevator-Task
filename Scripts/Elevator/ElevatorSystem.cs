@@ -118,7 +118,7 @@ namespace ElevatorTask
 
         private void MoveElevatorToFloor(int targetLevel)
         {
-            if (targetLevel == _currentElevatorLevel || _isElevatorMoving) return;
+            if (targetLevel == _currentElevatorLevel || _isElevatorMoving || _isDestinationSet) return;
 
             Floor targetFloor = floors[targetLevel];
             Animator currentFloorAnimator = floors[_currentElevatorLevel].DoorsAnimator;
