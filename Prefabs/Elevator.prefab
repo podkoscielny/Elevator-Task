@@ -191,6 +191,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 64
   elevatorSound: {fileID: 2703071675574005045}
+  buzzerSound: {fileID: 0}
   elevatorButtons:
   - {fileID: 7744952452737182210}
   - {fileID: 43272943421452042}
@@ -544,7 +545,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 134b77de09433814bac246858f976bcd, type: 2}
+  - {fileID: 2100000, guid: 2046bbe5eae674f41b2197e0b97cefd8, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -958,7 +959,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 134b77de09433814bac246858f976bcd, type: 2}
+  - {fileID: 2100000, guid: 2046bbe5eae674f41b2197e0b97cefd8, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -1081,7 +1082,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 134b77de09433814bac246858f976bcd, type: 2}
+  - {fileID: 2100000, guid: 2046bbe5eae674f41b2197e0b97cefd8, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -1176,7 +1177,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 134b77de09433814bac246858f976bcd, type: 2}
+  - {fileID: 2100000, guid: 2046bbe5eae674f41b2197e0b97cefd8, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -1271,7 +1272,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 134b77de09433814bac246858f976bcd, type: 2}
+  - {fileID: 2100000, guid: 2046bbe5eae674f41b2197e0b97cefd8, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0

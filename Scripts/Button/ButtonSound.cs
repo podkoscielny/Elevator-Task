@@ -6,6 +6,8 @@ namespace ElevatorTask
 {
     public abstract class ButtonSound : MonoBehaviour
     {
+        [field: SerializeField] public LayerMask PlayerLayer { get; private set; }
+
         [SerializeField] AudioSource buttonAudio;
         [SerializeField] AudioClip clickSound;
         [SerializeField] AudioClip buzzerSound;

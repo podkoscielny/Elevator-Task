@@ -11,6 +11,8 @@ namespace ElevatorTask
 
         protected override void OnMouseDown()
         {
+            if (!Interactable.IsPlayerInRange(transform.position, PlayerLayer)) return;
+
             base.OnMouseDown();
 
             OnButtonClicked?.Invoke(TargetElevatorLevel, this);

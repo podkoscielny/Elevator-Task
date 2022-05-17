@@ -9,6 +9,8 @@ namespace ElevatorTask
 
         protected override void OnMouseDown()
         {
+            if (!Interactable.IsPlayerInRange(transform.position, PlayerLayer)) return;
+
             base.OnMouseDown();
 
             OnFloorButtonClicked?.Invoke(this);

@@ -206,6 +206,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fc4f7d7a10830ff4ca9e383e947f775a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  <PlayerLayer>k__BackingField:
+    serializedVersion: 2
+    m_Bits: 128
   buttonAudio: {fileID: -941365691686283895}
   clickSound: {fileID: 8300000, guid: 8fc279315444760408e295394833a582, type: 3}
   buzzerSound: {fileID: 8300000, guid: c4acecbb10578744a95949e33626442d, type: 3}
