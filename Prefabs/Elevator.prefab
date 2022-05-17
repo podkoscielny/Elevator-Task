@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 6663594082732422457}
   - component: {fileID: 2201304187159202397}
   - component: {fileID: 5698033067523850340}
+  - component: {fileID: 2703071675574005045}
   m_Layer: 0
   m_Name: Elevator
   m_TagString: Untagged
@@ -186,13 +187,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   elevatorAnimator: {fileID: 1627953509}
-  elevatorAudio: {fileID: 6663594082732422457}
   collidableLayer:
     serializedVersion: 2
     m_Bits: 64
-  elevatorMoveSound: {fileID: 8300000, guid: dd8c411a1f323624d984145403733453, type: 3}
-  doorOpenSound: {fileID: 8300000, guid: c0781978b505c4944bf7c3fbadde0fe2, type: 3}
-  doorbellSound: {fileID: 8300000, guid: 622394e4f76cee64ba2c498bbebe7645, type: 3}
+  elevatorSound: {fileID: 2703071675574005045}
   elevatorButtons:
   - {fileID: 7744952452737182210}
   - {fileID: 43272943421452042}
@@ -205,6 +203,23 @@ MonoBehaviour:
   - {fileID: 2968272699096649933}
   - {fileID: 2849098838356971455}
   floors: []
+--- !u!114 &2703071675574005045
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 809290663282373033}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5d871fc5ace12c14587a997939bd6e84, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  elevatorSystem: {fileID: 5698033067523850340}
+  elevatorAudio: {fileID: 6663594082732422457}
+  elevatorMoveSound: {fileID: 8300000, guid: dd8c411a1f323624d984145403733453, type: 3}
+  doorMoveSound: {fileID: 8300000, guid: c0781978b505c4944bf7c3fbadde0fe2, type: 3}
+  doorbellSound: {fileID: 8300000, guid: 622394e4f76cee64ba2c498bbebe7645, type: 3}
 --- !u!1 &3977809655892716320
 GameObject:
   m_ObjectHideFlags: 0

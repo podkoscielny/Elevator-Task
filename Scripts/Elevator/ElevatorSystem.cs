@@ -7,14 +7,14 @@ namespace ElevatorTask
 {
     public class ElevatorSystem : MonoBehaviour
     {
-        [SerializeField] Animator elevatorAnimator;
-        [SerializeField] AudioSource elevatorAudio;
-        [SerializeField] LayerMask collidableLayer;
+        public event Action OnElevatorMovementStarted;
+        public event Action OnElevatorMovementEnded;
+        public event Action OnElevatorDoorsOpened;
+        public event Action OnDoorsMoved;
 
-        [Header("AudioClips")]
-        [SerializeField] AudioClip elevatorMoveSound;
-        [SerializeField] AudioClip doorOpenSound;
-        [SerializeField] AudioClip doorbellSound;
+        [SerializeField] Animator elevatorAnimator;
+        [SerializeField] LayerMask collidableLayer;
+        [SerializeField] ElevatorSound elevatorSound;
 
         [SerializeField] ElevatorButton[] elevatorButtons;
         [SerializeField] Floor[] floors;
@@ -33,12 +33,14 @@ namespace ElevatorTask
 
         private void OnEnable()
         {
+            elevatorSound.OnDoorbellSoundPlayed += OpenDoorAfterDoorbell;
             foreach (Floor floor in floors) floor.OnButtonClicked += MoveElevatorToPlayer;
             foreach (ElevatorButton button in elevatorButtons) button.OnButtonClicked += MoveElevatorToFloor;
         }
 
         private void OnDisable()
         {
+            elevatorSound.OnDoorbellSoundPlayed -= OpenDoorAfterDoorbell;
             foreach (Floor floor in floors) floor.OnButtonClicked -= MoveElevatorToPlayer;
             foreach (ElevatorButton button in elevatorButtons) button.OnButtonClicked -= MoveElevatorToFloor;
         }
@@ -103,7 +105,7 @@ namespace ElevatorTask
 
             if (targetLevel == _currentElevatorLevel)
             {
-                if (_areDoorsClosed) StartCoroutine(OpenDoorWithDoorbell(targetFloor.DoorsAnimator));
+                if (_areDoorsClosed) OnElevatorDoorsOpened?.Invoke();
             }
             else
             {
@@ -134,9 +136,7 @@ namespace ElevatorTask
 
             _isElevatorMoving = true;
 
-            elevatorAudio.loop = true;
-            elevatorAudio.clip = elevatorMoveSound;
-            elevatorAudio.Play();
+            OnElevatorMovementStarted?.Invoke();
 
             while (Vector3.Distance(transform.position, targetPosition) > 0.01f)
             {
@@ -146,44 +146,20 @@ namespace ElevatorTask
                 yield return null;
             }
 
-            float timeElapsed = 0f;
-            float lerpDuration = 100f;
-
-            while (elevatorAudio.volume > 0.01f)
-            {
-                elevatorAudio.volume = Mathf.Lerp(elevatorAudio.volume, 0, timeElapsed / lerpDuration);
-                timeElapsed += Time.deltaTime;
-
-                yield return null;
-            }
-
-            elevatorAudio.loop = false;
-            elevatorAudio.volume = 1f;
-            elevatorAudio.Stop();
-
-            StartCoroutine(OpenDoorWithDoorbell(doorsAnimator));
+            OnElevatorMovementEnded.Invoke();
 
             _currentElevatorLevel = targetFloorLevel;
             _isElevatorMoving = false;
             _isDestinationSet = false;
         }
 
-        private IEnumerator OpenDoorWithDoorbell(Animator doorsAnimator)
-        {
-            elevatorAudio.clip = doorbellSound;
-            elevatorAudio.Play();
-
-            yield return new WaitForSeconds(1f);
-
-            OpenTheDoor(doorsAnimator);
-        }
+        private void OpenDoorAfterDoorbell() => OpenTheDoor(floors[_currentElevatorLevel].DoorsAnimator);
 
         private void OpenTheDoor(Animator doorsAnimator, bool invokeThroughPhotoCell = false)
         {
             _areDoorsClosed = false;
 
-            elevatorAudio.clip = doorOpenSound;
-            elevatorAudio.Play();
+            OnDoorsMoved?.Invoke();
 
             if (invokeThroughPhotoCell)
             {
@@ -205,8 +181,7 @@ namespace ElevatorTask
 
             _areDoorsClosing = true;
 
-            elevatorAudio.clip = doorOpenSound;
-            elevatorAudio.Play();
+            OnDoorsMoved?.Invoke();
 
             if (invokeThroughPhotoCell)
             {
