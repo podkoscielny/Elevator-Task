@@ -3,15 +3,17 @@ using UnityEngine;
 
 namespace ElevatorTask
 {
-    public class ElevatorButton : MonoBehaviour
+    public class ElevatorButton : ButtonSound
     {
-        public event Action<int> OnButtonClicked;
+        public event Action<int, ButtonSound> OnButtonClicked;
 
         [field: SerializeField] public int TargetElevatorLevel;
 
-        private void OnMouseDown()
+        protected override void OnMouseDown()
         {
-            OnButtonClicked?.Invoke(TargetElevatorLevel);
+            base.OnMouseDown();
+
+            OnButtonClicked?.Invoke(TargetElevatorLevel, this);
         }
     }
 }

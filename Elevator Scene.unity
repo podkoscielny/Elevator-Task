@@ -716,6 +716,10 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5698033067523850340, guid: 1e44195df7f6abc4f884460864627f82, type: 3}
+      propertyPath: buzzerSound
+      value: 
+      objectReference: {fileID: 8300000, guid: c4acecbb10578744a95949e33626442d, type: 3}
+    - target: {fileID: 5698033067523850340, guid: 1e44195df7f6abc4f884460864627f82, type: 3}
       propertyPath: floors.Array.size
       value: 3
       objectReference: {fileID: 0}

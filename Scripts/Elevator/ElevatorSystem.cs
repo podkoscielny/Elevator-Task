@@ -15,6 +15,7 @@ namespace ElevatorTask
         [SerializeField] Animator elevatorAnimator;
         [SerializeField] LayerMask collidableLayer;
         [SerializeField] ElevatorSound elevatorSound;
+        [SerializeField] AudioClip buzzerSound;
 
         [SerializeField] ElevatorButton[] elevatorButtons;
         [SerializeField] Floor[] floors;
@@ -98,9 +99,13 @@ namespace ElevatorTask
             _areDoorsClosed = true;
         }
 
-        private void MoveElevatorToPlayer(int targetLevel)
+        private void MoveElevatorToPlayer(int targetLevel, ButtonSound buttonSound)
         {
-            if (_isElevatorMoving) return;
+            if (_isElevatorMoving)
+            {
+                buttonSound.PlayBuzzerSound();
+                return;
+            }
 
             Floor targetFloor = floors[targetLevel];
 
@@ -111,6 +116,8 @@ namespace ElevatorTask
                     _areDoorsClosed = false;
                     OnElevatorDoorsOpened?.Invoke();
                 }
+                else
+                    buttonSound.PlayBuzzerSound();
             }
             else
             {
@@ -121,9 +128,13 @@ namespace ElevatorTask
             }
         }
 
-        private void MoveElevatorToFloor(int targetLevel)
+        private void MoveElevatorToFloor(int targetLevel, ButtonSound buttonSound)
         {
-            if (targetLevel == _currentElevatorLevel || _isElevatorMoving || _isDestinationSet) return;
+            if (targetLevel == _currentElevatorLevel || _isElevatorMoving || _isDestinationSet)
+            {
+                buttonSound.PlayBuzzerSound();
+                return;
+            }
 
             Floor targetFloor = floors[targetLevel];
             Animator currentFloorAnimator = floors[_currentElevatorLevel].DoorsAnimator;
