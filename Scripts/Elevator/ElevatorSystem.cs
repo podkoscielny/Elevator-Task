@@ -174,7 +174,7 @@ namespace ElevatorTask
                 yield return null;
             }
 
-            OnElevatorMovementEnded.Invoke();
+            OnElevatorMovementEnded?.Invoke();
 
             CurrentElevatorLevel = targetFloorLevel;
             _isElevatorMoving = false;
