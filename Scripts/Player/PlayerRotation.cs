@@ -11,7 +11,6 @@ namespace ElevatorTask
         [SerializeField] Rigidbody playerRb;
 
         private float _xRotation = 0f;
-        private float _mouseSensitivityX = 500f;
         private float _mouseSensitivityY = 300f;
 
         private const float Y_ROTATION_RANGE = 80f;
@@ -32,12 +31,6 @@ namespace ElevatorTask
             mainCamera.localRotation = Quaternion.Euler(_xRotation, 0f, 0f);
         }
 
-        private void HandleBodyRotation()
-        {
-            float mouseInputX = Input.GetAxisRaw("Mouse X");
-            float mouseX = mouseInputX * _mouseSensitivityX * Time.deltaTime;
-
-            transform.Rotate(mouseX * Vector3.up);
-        }
+        private void HandleBodyRotation() => playerRb.rotation = Quaternion.Euler(playerRb.rotation.eulerAngles + new Vector3(0f, 1f * Input.GetAxis("Mouse X"), 0f));
     }
 }
