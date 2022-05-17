@@ -639,6 +639,14 @@ PrefabInstance:
       propertyPath: floors.Array.data[2]
       value: 
       objectReference: {fileID: 1669995916}
+    - target: {fileID: 8782295091579651462, guid: 1e44195df7f6abc4f884460864627f82, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 4.0796895
+      objectReference: {fileID: 0}
+    - target: {fileID: 8782295091579651462, guid: 1e44195df7f6abc4f884460864627f82, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0.2653
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 1e44195df7f6abc4f884460864627f82, type: 3}
 --- !u!114 &1669995916 stripped
