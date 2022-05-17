@@ -20,7 +20,7 @@ namespace ElevatorTask
         private WaitForSeconds _waitForDoorbell;
 
         private const float WAIT_FOR_DOORBELL_DURATION = 1f;
-        private const float TURN_VOLUME_DOWN_LERP = 100f;
+        private const float TURN_VOLUME_DOWN_LERP = 20f;
 
         private void OnEnable()
         {
