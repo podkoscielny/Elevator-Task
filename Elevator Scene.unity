@@ -312,6 +312,70 @@ CapsuleCollider:
   m_Height: 1.7684968
   m_Direction: 1
   m_Center: {x: -0, y: 0.0074216127, z: 0}
+--- !u!1 &384265551
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 384265553}
+  - component: {fileID: 384265552}
+  m_Layer: 0
+  m_Name: Level Reflection Probe
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!215 &384265552
+ReflectionProbe:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 384265551}
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Type: 0
+  m_Mode: 1
+  m_RefreshMode: 0
+  m_TimeSlicingMode: 0
+  m_Resolution: 128
+  m_UpdateFrequency: 0
+  m_BoxSize: {x: 21.056643, y: 24.88749, z: 20.716404}
+  m_BoxOffset: {x: -5.620448, y: 8.208597, z: -1.1281471}
+  m_NearClip: 0.3
+  m_FarClip: 1000
+  m_ShadowDistance: 100
+  m_ClearFlags: 1
+  m_BackGroundColor: {r: 0.19215687, g: 0.3019608, b: 0.4745098, a: 0}
+  m_CullingMask:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_IntensityMultiplier: 1
+  m_BlendDistance: 1
+  m_HDR: 1
+  m_BoxProjection: 1
+  m_RenderDynamicObjects: 0
+  m_UseOcclusionCulling: 1
+  m_Importance: 1
+  m_CustomBakedTexture: {fileID: 0}
+--- !u!4 &384265553
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 384265551}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 4.94, y: 3.98, z: -6.012085}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 6
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &775646109 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 8769907102894961946, guid: 79480851f73c44a4e996a5b8a1c51d31, type: 3}
@@ -578,6 +642,22 @@ PrefabInstance:
     - target: {fileID: 809290663282373033, guid: 1e44195df7f6abc4f884460864627f82, type: 3}
       propertyPath: m_Name
       value: Elevator
+      objectReference: {fileID: 0}
+    - target: {fileID: 2569249672216587801, guid: 1e44195df7f6abc4f884460864627f82, type: 3}
+      propertyPath: m_BoxSize.x
+      value: 4.1532784
+      objectReference: {fileID: 0}
+    - target: {fileID: 2569249672216587801, guid: 1e44195df7f6abc4f884460864627f82, type: 3}
+      propertyPath: m_Resolution
+      value: 128
+      objectReference: {fileID: 0}
+    - target: {fileID: 2569249672216587801, guid: 1e44195df7f6abc4f884460864627f82, type: 3}
+      propertyPath: m_BoxOffset.x
+      value: -2.0766392
+      objectReference: {fileID: 0}
+    - target: {fileID: 2569249672216587801, guid: 1e44195df7f6abc4f884460864627f82, type: 3}
+      propertyPath: m_RefreshMode
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3503864157205820769, guid: 1e44195df7f6abc4f884460864627f82, type: 3}
       propertyPath: m_RootOrder
