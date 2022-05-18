@@ -9,12 +9,15 @@ namespace ElevatorTask
         [SerializeField] Animator playerAnimator;
         [SerializeField] Rigidbody playerRb;
 
+        private bool _isWalkingFast = false;
+
         private float _verticalMovement;
         private float _horizontalMovement;
         private float _timestepMultiplier;
 
         private const float INITIAL_TIMESTEP = 0.02f;
         private const float MOVEMENT_SPEED = 120f;
+        private const float SPRINT_MULTIPLIER = 2f;
 
         private void Start() => SetTimestepMultiplier();
 
@@ -31,6 +34,8 @@ namespace ElevatorTask
             ResetMovementVelocity();
 
             Vector3 direction = transform.right * _horizontalMovement + transform.forward * _verticalMovement;
+            if (_isWalkingFast) direction *= SPRINT_MULTIPLIER;
+
             playerRb.AddForce(MOVEMENT_SPEED * _timestepMultiplier * direction);
         }
 
@@ -47,6 +52,15 @@ namespace ElevatorTask
         {
             _horizontalMovement = Input.GetAxisRaw("Horizontal");
             _verticalMovement = Input.GetAxisRaw("Vertical");
+
+            if (Input.GetKeyDown(KeyCode.LeftShift))
+            {
+                _isWalkingFast = true;
+            }
+            else if (Input.GetKeyUp(KeyCode.LeftShift))
+            {
+                _isWalkingFast = false;
+            }
         }
 
         private void ResetMovementVelocity()
