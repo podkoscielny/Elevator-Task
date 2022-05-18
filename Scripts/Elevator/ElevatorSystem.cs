@@ -160,8 +160,8 @@ namespace ElevatorTask
         {
             yield return new WaitUntil(() => _areDoorsClosed);
 
-            int levelDifference = targetFloorLevel - CurrentElevatorLevel;
             _isElevatorMoving = true;
+            int levelDifference = targetFloorLevel - CurrentElevatorLevel;
 
             OnElevatorMovementStarted?.Invoke();
 
@@ -209,7 +209,6 @@ namespace ElevatorTask
         private void OpenTheDoor(Animator doorsAnimator)
         {
             _areDoorsClosed = false;
-            OnDoorsMoved?.Invoke();
             CrossfadeDoorsAnimation(doorsAnimator, "open_doors");
         }
 
@@ -218,12 +217,13 @@ namespace ElevatorTask
             if (collidablesBlockingDoors.Count > 0) return;
 
             _areDoorsClosing = true;
-            OnDoorsMoved?.Invoke();
             CrossfadeDoorsAnimation(doorsAnimator, "close_doors");
         }
 
         private void CrossfadeDoorsAnimation(Animator doorsAnimator, string animationName)
         {
+            OnDoorsMoved?.Invoke();
+
             float stateNormalizedTime = Mathf.Min(1, elevatorAnimator.GetCurrentAnimatorStateInfo(0).normalizedTime);
             float transitionOffset = 1 - stateNormalizedTime;
 
