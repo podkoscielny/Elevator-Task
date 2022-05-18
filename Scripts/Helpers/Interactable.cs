@@ -1,11 +1,12 @@
-using System.Collections;
-using System.Collections.Generic;
+using System;
 using UnityEngine;
 
 namespace ElevatorTask
 {
     public static class Interactable
     {
+        public static event Action OnGetCloserPanelShowed;
+
         private const float INTERACTABLE_MAX_DISTANCE = 2.4f;
 
         public static bool IsPlayerInRange(Vector3 interactablePosition, LayerMask playerMask)
@@ -14,5 +15,7 @@ namespace ElevatorTask
             
             return colliders.Length > 0;
         }
+
+        public static void ShowGetCloserPanel() => OnGetCloserPanelShowed?.Invoke();
     }
 }
