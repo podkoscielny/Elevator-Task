@@ -5,7 +5,7 @@ namespace ElevatorTask
 {
     public static class Interactable
     {
-        public static event Action OnGetCloserPanelShowed;
+        public static event Action OnInteractableDistanceNotReached;
 
         private const float INTERACTABLE_MAX_DISTANCE = 2.4f;
 
@@ -16,6 +16,6 @@ namespace ElevatorTask
             return colliders.Length > 0;
         }
 
-        public static void ShowGetCloserPanel() => OnGetCloserPanelShowed?.Invoke();
+        public static void ShowGetCloserPanel() => OnInteractableDistanceNotReached?.Invoke();
     }
 }

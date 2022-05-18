@@ -13,9 +13,9 @@ namespace ElevatorTask
         private const float PANEL_APPEARANCE_SPEED = 0.5f;
         private const float HIDE_PANEL_DELAY = 2f;
 
-        private void OnEnable() => Interactable.OnGetCloserPanelShowed += ShowGetCloserPanel;
+        private void OnEnable() => Interactable.OnInteractableDistanceNotReached += ShowGetCloserPanel;
 
-        private void OnDisable() => Interactable.OnGetCloserPanelShowed -= ShowGetCloserPanel;
+        private void OnDisable() => Interactable.OnInteractableDistanceNotReached -= ShowGetCloserPanel;
 
         private void Start()
         {
