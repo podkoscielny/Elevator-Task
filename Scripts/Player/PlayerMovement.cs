@@ -46,6 +46,8 @@ namespace ElevatorTask
             playerAnimator.SetFloat("Movement", movement.magnitude);
             playerAnimator.SetFloat("MovementX", _horizontalMovement);
             playerAnimator.SetFloat("MovementY", _verticalMovement);
+
+            playerAnimator.speed = _isWalkingFast ? 1.2f : 1f;
         }
 
         private void GetMovementInput()
