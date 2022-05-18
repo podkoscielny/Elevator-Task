@@ -65,7 +65,11 @@ namespace ElevatorTask
             SetInitialElevatorPosition();
         }
 
-        private void OnTriggerEnter(Collider collider)
+        private void OnTriggerEnter(Collider collider) => HandlePhotoCellEntered(collider);
+
+        private void OnTriggerExit(Collider collider) => HandlePhotoCellExit(collider);
+
+        private void HandlePhotoCellEntered(Collider collider)
         {
             if (_isElevatorMoving || _areDoorsClosed) return;
 
@@ -85,7 +89,7 @@ namespace ElevatorTask
             }
         }
 
-        private void OnTriggerExit(Collider collider)
+        private void HandlePhotoCellExit(Collider collider)
         {
             if (_isElevatorMoving || _areDoorsClosed) return;
 

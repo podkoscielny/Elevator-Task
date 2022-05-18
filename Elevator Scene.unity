@@ -258,6 +258,7 @@ GameObject:
   - component: {fileID: 335619381}
   - component: {fileID: 335619382}
   - component: {fileID: 335619383}
+  - component: {fileID: 335619384}
   m_Layer: 7
   m_Name: Player
   m_TagString: Untagged
@@ -279,6 +280,7 @@ Transform:
   - {fileID: 916517710}
   - {fileID: 1553378857}
   - {fileID: 799094543}
+  - {fileID: 1624412580}
   m_Father: {fileID: 0}
   m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 90, z: 0}
@@ -326,6 +328,25 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   mainCamera: {fileID: 916517710}
   playerAnimator: {fileID: 789465533}
+  playerRb: {fileID: 335619381}
+--- !u!114 &335619384
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 335619379}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cc03519a56d6dda4d877cdd3070015e1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  stepHeight: 0.46
+  stepDetection: {fileID: 1624412580}
+  groundCheck: {fileID: 799094543}
+  groundMask:
+    serializedVersion: 2
+    m_Bits: 1
   playerRb: {fileID: 335619381}
 --- !u!136 &335619385
 CapsuleCollider:
@@ -10489,6 +10510,36 @@ Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: cbcdcf61d5997004183c19235cfed7ea, type: 3}
   m_PrefabInstance: {fileID: 1553378856}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &1624412579
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1624412580}
+  m_Layer: 7
+  m_Name: Step Detection
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1624412580
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1624412579}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: -0.864, z: 0.261}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 335619380}
+  m_RootOrder: 3
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &1627953507
 PrefabInstance:
   m_ObjectHideFlags: 0
