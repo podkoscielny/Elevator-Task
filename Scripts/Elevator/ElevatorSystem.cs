@@ -134,12 +134,7 @@ namespace ElevatorTask
                     buttonSound.PlayBuzzerSound();
             }
             else
-            {
-                _isDestinationSet = true;
-                Vector3 targetPosition = new Vector3(transform.position.x, floors[targetLevel].ElevatorTarget.position.y, transform.position.z);
-                CloseTheDoor(floors[CurrentElevatorLevel].DoorsAnimator);
-                StartCoroutine(MoveElevatorCoroutine(targetPosition, targetLevel));
-            }
+                SetElevatorDestination(targetLevel);
         }
 
         private void MoveElevatorToFloor(int targetLevel, ButtonSound buttonSound)
@@ -150,12 +145,14 @@ namespace ElevatorTask
                 return;
             }
 
-            Animator currentFloorAnimator = floors[CurrentElevatorLevel].DoorsAnimator;
+            SetElevatorDestination(targetLevel);
+        }
 
-            CloseTheDoor(currentFloorAnimator);
-
+        private void SetElevatorDestination(int targetLevel)
+        {
             _isDestinationSet = true;
             Vector3 targetPosition = new Vector3(transform.position.x, floors[targetLevel].ElevatorTarget.position.y, transform.position.z);
+            CloseTheDoor(floors[CurrentElevatorLevel].DoorsAnimator);
             StartCoroutine(MoveElevatorCoroutine(targetPosition, targetLevel));
         }
 
@@ -164,7 +161,6 @@ namespace ElevatorTask
             yield return new WaitUntil(() => _areDoorsClosed);
 
             int levelDifference = targetFloorLevel - CurrentElevatorLevel;
-
             _isElevatorMoving = true;
 
             OnElevatorMovementStarted?.Invoke();
@@ -173,7 +169,7 @@ namespace ElevatorTask
             {
                 float step = ELEVATOR_SPEED * Time.deltaTime;
                 transform.position = Vector3.MoveTowards(transform.position, targetPosition, step);
-                CheckElevatorLevel(targetFloorLevel);
+                CheckElevatorLevel(targetFloorLevel, levelDifference);
 
                 yield return null;
             }
@@ -184,11 +180,9 @@ namespace ElevatorTask
             _isElevatorMoving = false;
         }
 
-        private void CheckElevatorLevel(int targetLevel)
+        private void CheckElevatorLevel(int targetLevel, int levelDifference)
         {
             if (targetLevel == CurrentElevatorLevel) return;
-
-            int levelDifference = targetLevel - CurrentElevatorLevel;
 
             if (levelDifference > 0)
             {
@@ -215,14 +209,8 @@ namespace ElevatorTask
         private void OpenTheDoor(Animator doorsAnimator)
         {
             _areDoorsClosed = false;
-
             OnDoorsMoved?.Invoke();
-
-            float stateNormalizedTime = Mathf.Min(1, elevatorAnimator.GetCurrentAnimatorStateInfo(0).normalizedTime);
-            float transitionOffset = 1 - stateNormalizedTime;
-
-            elevatorAnimator.CrossFade("open_doors", 0, 0, transitionOffset);
-            doorsAnimator.CrossFade("open_doors", 0, 0, transitionOffset);
+            CrossfadeDoorsAnimation(doorsAnimator, "open_doors");
         }
 
         private void CloseTheDoor(Animator doorsAnimator)
@@ -230,14 +218,17 @@ namespace ElevatorTask
             if (collidablesBlockingDoors.Count > 0) return;
 
             _areDoorsClosing = true;
-
             OnDoorsMoved?.Invoke();
+            CrossfadeDoorsAnimation(doorsAnimator, "close_doors");
+        }
 
+        private void CrossfadeDoorsAnimation(Animator doorsAnimator, string animationName)
+        {
             float stateNormalizedTime = Mathf.Min(1, elevatorAnimator.GetCurrentAnimatorStateInfo(0).normalizedTime);
             float transitionOffset = 1 - stateNormalizedTime;
 
-            elevatorAnimator.CrossFade("close_doors", 0, 0, transitionOffset);
-            doorsAnimator.CrossFade("close_doors", 0, 0, transitionOffset);
+            elevatorAnimator.CrossFade(animationName, 0, 0, transitionOffset);
+            doorsAnimator.CrossFade(animationName, 0, 0, transitionOffset);
         }
 
         private void SetFloorLevels()

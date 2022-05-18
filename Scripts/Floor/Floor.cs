@@ -12,14 +12,14 @@ namespace ElevatorTask
 
         [SerializeField] FloorButton floorButton;
 
-        public int FloorLevel { get; private set; }
+        private int _floorLevel;
 
         private void OnEnable() => floorButton.OnFloorButtonClicked += SendButtonClickInfo;
 
         private void OnDisable() => floorButton.OnFloorButtonClicked -= SendButtonClickInfo;
 
-        public void SetFloorLevel(int level) => FloorLevel = level;
+        public void SetFloorLevel(int level) => _floorLevel = level;
 
-        private void SendButtonClickInfo(ButtonSound buttonSound) => OnButtonClicked?.Invoke(FloorLevel, buttonSound);
+        private void SendButtonClickInfo(ButtonSound buttonSound) => OnButtonClicked?.Invoke(_floorLevel, buttonSound);
     }
 }
