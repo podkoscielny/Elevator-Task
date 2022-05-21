@@ -188,10 +188,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 361d19cafa107fc478af71abce69c82b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  elevatorData: {fileID: 0}
   elevatorAnimator: {fileID: 1627953509}
-  collidableLayer:
-    serializedVersion: 2
-    m_Bits: 64
+  photocell: {fileID: 4365832363034062357}
   elevatorSound: {fileID: 2703071675574005045}
   buzzerSound: {fileID: 0}
   elevatorButtons:
@@ -240,7 +239,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &8860611031202400595
 Transform:
   m_ObjectHideFlags: 0
@@ -267,6 +266,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 43beb7b92affecb478ec03481930e47d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  elevatorData: {fileID: 0}
 --- !u!65 &2833590708727166071
 BoxCollider:
   m_ObjectHideFlags: 0

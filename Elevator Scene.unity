@@ -1667,6 +1667,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4365832363034062357, guid: 1e44195df7f6abc4f884460864627f82, type: 3}
+      propertyPath: elevatorData
+      value: 
+      objectReference: {fileID: 11400000, guid: 6f771b06631b0ae44801843abe568be6, type: 2}
     - target: {fileID: 5698033067523850340, guid: 1e44195df7f6abc4f884460864627f82, type: 3}
       propertyPath: buzzerSound
       value: 

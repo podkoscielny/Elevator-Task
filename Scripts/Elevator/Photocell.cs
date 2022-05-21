@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -6,46 +7,43 @@ namespace ElevatorTask
 {
     public class Photocell : MonoBehaviour
     {
-        //private void OnTriggerEnter(Collider collider) => HandlePhotoCellEntered(collider);
+        public event Action OnCollidableBlockingDoorsAdded;
+        public event Action OnCollidableBlockingDoorsRemoved;
 
-        //private void OnTriggerExit(Collider collider) => HandlePhotoCellExit(collider);
+        [SerializeField] ElevatorDataSO elevatorData;
 
-        //private void HandlePhotoCellEntered(Collider collider)
-        //{
-        //    if (_isElevatorMoving || _areDoorsClosed) return;
+        private void OnTriggerEnter(Collider collider) => HandlePhotoCellEntered(collider);
 
-        //    GameObject collidableObject = collider.gameObject;
+        private void OnTriggerExit(Collider collider) => HandlePhotoCellExit(collider);
 
-        //    if (IsObjectsMaskCollidable(collidableObject.layer) && !collidablesBlockingDoors.Contains(collidableObject))
-        //    {
-        //        collidablesBlockingDoors.Add(collidableObject);
+        private void HandlePhotoCellEntered(Collider collider)
+        {
+            if (elevatorData.IsElevatorMoving || elevatorData.AreDoorsClosed) return;
 
-        //        if (_areDoorsClosing)
-        //        {
-        //            _areDoorsClosing = false;
+            GameObject collidableObject = collider.gameObject;
 
-        //            Floor currentFloor = floors[CurrentElevatorLevel];
-        //            OpenTheDoor(currentFloor.DoorsAnimator);
-        //        }
-        //    }
-        //}
+            if (IsObjectsMaskCollidable(collidableObject.layer) && !elevatorData.CollidablesBlockingDoors.Contains(collidableObject))
+            {
+                elevatorData.CollidablesBlockingDoors.Add(collidableObject);
 
-        //private void HandlePhotoCellExit(Collider collider)
-        //{
-        //    if (_isElevatorMoving || _areDoorsClosed) return;
+                OnCollidableBlockingDoorsAdded?.Invoke();
+            }
+        }
 
-        //    GameObject collidableObject = collider.gameObject;
+        private void HandlePhotoCellExit(Collider collider)
+        {
+            if (elevatorData.IsElevatorMoving || elevatorData.AreDoorsClosed) return;
 
-        //    if (IsObjectsMaskCollidable(collidableObject.layer) && collidablesBlockingDoors.Contains(collidableObject))
-        //    {
-        //        collidablesBlockingDoors.Remove(collidableObject);
+            GameObject collidableObject = collider.gameObject;
 
-        //        if (_isDestinationSet && collidablesBlockingDoors.Count == 0)
-        //        {
-        //            Floor currentFloor = floors[CurrentElevatorLevel];
-        //            CloseTheDoor(currentFloor.DoorsAnimator);
-        //        }
-        //    }
-        //}
+            if (IsObjectsMaskCollidable(collidableObject.layer) && elevatorData.CollidablesBlockingDoors.Contains(collidableObject))
+            {
+                elevatorData.CollidablesBlockingDoors.Remove(collidableObject);
+
+                OnCollidableBlockingDoorsRemoved?.Invoke();
+            }
+        }
+
+        private bool IsObjectsMaskCollidable(int objectsLayer) => (elevatorData.CollidableLayer.value & (1 << objectsLayer)) > 0;
     }
 }

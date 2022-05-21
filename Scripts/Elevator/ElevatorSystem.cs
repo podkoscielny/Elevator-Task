@@ -14,14 +14,12 @@ namespace ElevatorTask
 
         [SerializeField] ElevatorDataSO elevatorData;
         [SerializeField] Animator elevatorAnimator;
-        [SerializeField] LayerMask collidableLayer;
+        [SerializeField] Photocell photocell;
         [SerializeField] ElevatorSound elevatorSound;
         [SerializeField] AudioClip buzzerSound;
 
         [SerializeField] ElevatorButton[] elevatorButtons;
         [SerializeField] Floor[] floors;
-
-        private List<GameObject> collidablesBlockingDoors = new List<GameObject>();
 
         private const float ELEVATOR_SPEED = 4f;
 
@@ -29,6 +27,8 @@ namespace ElevatorTask
 
         private void OnEnable()
         {
+            photocell.OnCollidableBlockingDoorsAdded += OpenTheDoorThroughPhotocell;
+            photocell.OnCollidableBlockingDoorsRemoved += CloseTheDoorThroughPhotocell;
             elevatorSound.OnDoorbellSoundPlayed += OpenDoorAfterDoorbell;
             foreach (Floor floor in floors) floor.OnButtonClicked += MoveElevatorToPlayer;
             foreach (ElevatorButton button in elevatorButtons) button.OnButtonClicked += MoveElevatorToFloor;
@@ -36,6 +36,8 @@ namespace ElevatorTask
 
         private void OnDisable()
         {
+            photocell.OnCollidableBlockingDoorsAdded -= OpenTheDoorThroughPhotocell;
+            photocell.OnCollidableBlockingDoorsRemoved -= CloseTheDoorThroughPhotocell;
             elevatorSound.OnDoorbellSoundPlayed -= OpenDoorAfterDoorbell;
             foreach (Floor floor in floors) floor.OnButtonClicked -= MoveElevatorToPlayer;
             foreach (ElevatorButton button in elevatorButtons) button.OnButtonClicked -= MoveElevatorToFloor;
@@ -48,54 +50,30 @@ namespace ElevatorTask
             SetInitialElevatorPosition();
         }
 
-        private void OnTriggerEnter(Collider collider) => HandlePhotoCellEntered(collider);
-
-        private void OnTriggerExit(Collider collider) => HandlePhotoCellExit(collider);
-
-        private void HandlePhotoCellEntered(Collider collider)
-        {
-            if (elevatorData.IsElevatorMoving || elevatorData.AreDoorsClosed) return;
-
-            GameObject collidableObject = collider.gameObject;
-
-            if (IsObjectsMaskCollidable(collidableObject.layer) && !collidablesBlockingDoors.Contains(collidableObject))
-            {
-                collidablesBlockingDoors.Add(collidableObject);
-
-                if (elevatorData.AreDoorsClosing)
-                {
-                    elevatorData.AreDoorsClosing = false;
-
-                    Floor currentFloor = floors[elevatorData.CurrentElevatorLevel];
-                    OpenTheDoor(currentFloor.DoorsAnimator);
-                }
-            }
-        }
-
-        private void HandlePhotoCellExit(Collider collider)
-        {
-            if (elevatorData.IsElevatorMoving || elevatorData.AreDoorsClosed) return;
-
-            GameObject collidableObject = collider.gameObject;
-
-            if (IsObjectsMaskCollidable(collidableObject.layer) && collidablesBlockingDoors.Contains(collidableObject))
-            {
-                collidablesBlockingDoors.Remove(collidableObject);
-
-                if (elevatorData.IsDestinationSet && collidablesBlockingDoors.Count == 0)
-                {
-                    Floor currentFloor = floors[elevatorData.CurrentElevatorLevel];
-                    CloseTheDoor(currentFloor.DoorsAnimator);
-                }
-            }
-        }
-
-        private bool IsObjectsMaskCollidable(int objectsLayer) => (collidableLayer.value & (1 << objectsLayer)) > 0;
-
         public void SetDoorsToClosed() //Invoke after close_doors animation in Animation Event 
         {
             elevatorData.AreDoorsClosing = false;
             elevatorData.AreDoorsClosed = true;
+        }
+
+        private void OpenTheDoorThroughPhotocell()
+        {
+            if (elevatorData.AreDoorsClosing)
+            {
+                elevatorData.AreDoorsClosing = false;
+
+                Floor currentFloor = floors[elevatorData.CurrentElevatorLevel];
+                OpenTheDoor(currentFloor.DoorsAnimator);
+            }
+        }
+
+        private void CloseTheDoorThroughPhotocell()
+        {
+            if (elevatorData.IsDestinationSet && elevatorData.CollidablesBlockingDoors.Count == 0)
+            {
+                Floor currentFloor = floors[elevatorData.CurrentElevatorLevel];
+                CloseTheDoor(currentFloor.DoorsAnimator);
+            }
         }
 
         private void MoveElevatorToPlayer(int targetLevel, ButtonSound buttonSound)
@@ -197,7 +175,7 @@ namespace ElevatorTask
 
         private void CloseTheDoor(Animator doorsAnimator)
         {
-            if (collidablesBlockingDoors.Count > 0) return;
+            if (elevatorData.CollidablesBlockingDoors.Count > 0) return;
 
             elevatorData.AreDoorsClosing = true;
             CrossfadeDoorsAnimation(doorsAnimator, "close_doors");
