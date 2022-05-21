@@ -7,12 +7,12 @@ namespace ElevatorTask
 {
     public class ElevatorLevelPanel : MonoBehaviour
     {
-        [SerializeField] ElevatorSystem elevatorSystem;
+        [SerializeField] ElevatorDataSO elevatorData;
         [SerializeField] TextMeshPro panelText;
 
-        private void OnEnable() => elevatorSystem.OnElevatorLevelChanged += SetCurrentElevatorLevelText;
+        private void OnEnable() => elevatorData.OnElevatorLevelChanged += SetCurrentElevatorLevelText;
 
-        private void OnDisable() => elevatorSystem.OnElevatorLevelChanged -= SetCurrentElevatorLevelText;
+        private void OnDisable() => elevatorData.OnElevatorLevelChanged -= SetCurrentElevatorLevelText;
 
         private void SetCurrentElevatorLevelText(int elevatorLevel) => panelText.text = $"{elevatorLevel}";
     }

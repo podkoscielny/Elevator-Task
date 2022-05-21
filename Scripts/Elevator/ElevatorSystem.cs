@@ -7,23 +7,12 @@ namespace ElevatorTask
 {
     public class ElevatorSystem : MonoBehaviour
     {
-        public event Action<int> OnElevatorLevelChanged;
         public event Action OnElevatorMovementStarted;
         public event Action OnElevatorMovementEnded;
         public event Action OnElevatorDoorsOpened;
         public event Action OnDoorsMoved;
 
-        public int CurrentElevatorLevel
-        {
-            get => _currentElevatorLevel;
-
-            private set
-            {
-                _currentElevatorLevel = value;
-                OnElevatorLevelChanged?.Invoke(value);
-            }
-        }
-
+        [SerializeField] ElevatorDataSO elevatorData;
         [SerializeField] Animator elevatorAnimator;
         [SerializeField] LayerMask collidableLayer;
         [SerializeField] ElevatorSound elevatorSound;
@@ -34,12 +23,6 @@ namespace ElevatorTask
 
         private List<GameObject> collidablesBlockingDoors = new List<GameObject>();
 
-        private bool _isElevatorMoving = false;
-        private bool _areDoorsClosed = true;
-        private bool _areDoorsClosing = false;
-        private bool _isDestinationSet = false;
-
-        private int _currentElevatorLevel = 0;
         private const float ELEVATOR_SPEED = 4f;
 
         private void OnValidate() => SortFloorsByHeight();
@@ -71,7 +54,7 @@ namespace ElevatorTask
 
         private void HandlePhotoCellEntered(Collider collider)
         {
-            if (_isElevatorMoving || _areDoorsClosed) return;
+            if (elevatorData.IsElevatorMoving || elevatorData.AreDoorsClosed) return;
 
             GameObject collidableObject = collider.gameObject;
 
@@ -79,11 +62,11 @@ namespace ElevatorTask
             {
                 collidablesBlockingDoors.Add(collidableObject);
 
-                if (_areDoorsClosing)
+                if (elevatorData.AreDoorsClosing)
                 {
-                    _areDoorsClosing = false;
+                    elevatorData.AreDoorsClosing = false;
 
-                    Floor currentFloor = floors[CurrentElevatorLevel];
+                    Floor currentFloor = floors[elevatorData.CurrentElevatorLevel];
                     OpenTheDoor(currentFloor.DoorsAnimator);
                 }
             }
@@ -91,7 +74,7 @@ namespace ElevatorTask
 
         private void HandlePhotoCellExit(Collider collider)
         {
-            if (_isElevatorMoving || _areDoorsClosed) return;
+            if (elevatorData.IsElevatorMoving || elevatorData.AreDoorsClosed) return;
 
             GameObject collidableObject = collider.gameObject;
 
@@ -99,9 +82,9 @@ namespace ElevatorTask
             {
                 collidablesBlockingDoors.Remove(collidableObject);
 
-                if (_isDestinationSet && collidablesBlockingDoors.Count == 0)
+                if (elevatorData.IsDestinationSet && collidablesBlockingDoors.Count == 0)
                 {
-                    Floor currentFloor = floors[CurrentElevatorLevel];
+                    Floor currentFloor = floors[elevatorData.CurrentElevatorLevel];
                     CloseTheDoor(currentFloor.DoorsAnimator);
                 }
             }
@@ -111,23 +94,23 @@ namespace ElevatorTask
 
         public void SetDoorsToClosed() //Invoke after close_doors animation in Animation Event 
         {
-            _areDoorsClosing = false;
-            _areDoorsClosed = true;
+            elevatorData.AreDoorsClosing = false;
+            elevatorData.AreDoorsClosed = true;
         }
 
         private void MoveElevatorToPlayer(int targetLevel, ButtonSound buttonSound)
         {
-            if (_isElevatorMoving)
+            if (elevatorData.IsElevatorMoving)
             {
                 buttonSound.PlayBuzzerSound();
                 return;
             }
 
-            if (targetLevel == CurrentElevatorLevel)
+            if (targetLevel == elevatorData.CurrentElevatorLevel)
             {
-                if (_areDoorsClosed)
+                if (elevatorData.AreDoorsClosed)
                 {
-                    _areDoorsClosed = false;
+                    elevatorData.AreDoorsClosed = false;
                     OnElevatorDoorsOpened?.Invoke();
                 }
                 else
@@ -139,7 +122,7 @@ namespace ElevatorTask
 
         private void MoveElevatorToFloor(int targetLevel, ButtonSound buttonSound)
         {
-            if (targetLevel == CurrentElevatorLevel || _isElevatorMoving || _isDestinationSet)
+            if (targetLevel == elevatorData.CurrentElevatorLevel || elevatorData.IsElevatorMoving || elevatorData.IsDestinationSet)
             {
                 buttonSound.PlayBuzzerSound();
                 return;
@@ -150,18 +133,18 @@ namespace ElevatorTask
 
         private void SetElevatorDestination(int targetLevel)
         {
-            _isDestinationSet = true;
+            elevatorData.IsDestinationSet = true;
             Vector3 targetPosition = new Vector3(transform.position.x, floors[targetLevel].ElevatorTarget.position.y, transform.position.z);
-            CloseTheDoor(floors[CurrentElevatorLevel].DoorsAnimator);
+            CloseTheDoor(floors[elevatorData.CurrentElevatorLevel].DoorsAnimator);
             StartCoroutine(MoveElevatorCoroutine(targetPosition, targetLevel));
         }
 
         private IEnumerator MoveElevatorCoroutine(Vector3 targetPosition, int targetFloorLevel)
         {
-            yield return new WaitUntil(() => _areDoorsClosed);
+            yield return new WaitUntil(() => elevatorData.AreDoorsClosed);
 
-            _isElevatorMoving = true;
-            int levelDifference = targetFloorLevel - CurrentElevatorLevel;
+            elevatorData.IsElevatorMoving = true;
+            int levelDifference = targetFloorLevel - elevatorData.CurrentElevatorLevel;
 
             OnElevatorMovementStarted?.Invoke();
 
@@ -176,39 +159,39 @@ namespace ElevatorTask
 
             OnElevatorMovementEnded?.Invoke();
 
-            CurrentElevatorLevel = targetFloorLevel;
-            _isElevatorMoving = false;
+            elevatorData.CurrentElevatorLevel = targetFloorLevel;
+            elevatorData.IsElevatorMoving = false;
         }
 
         private void CheckElevatorLevel(int targetLevel, int levelDifference)
         {
-            if (targetLevel == CurrentElevatorLevel) return;
+            if (targetLevel == elevatorData.CurrentElevatorLevel) return;
 
             if (levelDifference > 0)
             {
-                int nextLevelIndex = CurrentElevatorLevel + 1;
+                int nextLevelIndex = elevatorData.CurrentElevatorLevel + 1;
                 float nextLevelYPositon = floors[nextLevelIndex].ElevatorTarget.position.y;
 
-                if (transform.position.y >= nextLevelYPositon) CurrentElevatorLevel = nextLevelIndex;
+                if (transform.position.y >= nextLevelYPositon) elevatorData.CurrentElevatorLevel = nextLevelIndex;
             }
             else
             {
-                int nextLevelIndex = CurrentElevatorLevel - 1;
+                int nextLevelIndex = elevatorData.CurrentElevatorLevel - 1;
                 float nextLevelYPositon = floors[nextLevelIndex].ElevatorTarget.position.y;
 
-                if (transform.position.y <= nextLevelYPositon) CurrentElevatorLevel = nextLevelIndex;
+                if (transform.position.y <= nextLevelYPositon) elevatorData.CurrentElevatorLevel = nextLevelIndex;
             }
         }
 
         private void OpenDoorAfterDoorbell()
         {
-            _isDestinationSet = false;
-            OpenTheDoor(floors[CurrentElevatorLevel].DoorsAnimator);
+            elevatorData.IsDestinationSet = false;
+            OpenTheDoor(floors[elevatorData.CurrentElevatorLevel].DoorsAnimator);
         }
 
         private void OpenTheDoor(Animator doorsAnimator)
         {
-            _areDoorsClosed = false;
+            elevatorData.AreDoorsClosed = false;
             CrossfadeDoorsAnimation(doorsAnimator, "open_doors");
         }
 
@@ -216,7 +199,7 @@ namespace ElevatorTask
         {
             if (collidablesBlockingDoors.Count > 0) return;
 
-            _areDoorsClosing = true;
+            elevatorData.AreDoorsClosing = true;
             CrossfadeDoorsAnimation(doorsAnimator, "close_doors");
         }
 

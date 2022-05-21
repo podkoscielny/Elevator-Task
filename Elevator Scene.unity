@@ -946,6 +946,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 1763886160}
     - target: {fileID: 1464508029, guid: 79480851f73c44a4e996a5b8a1c51d31, type: 3}
+      propertyPath: elevatorData
+      value: 
+      objectReference: {fileID: 11400000, guid: 6f771b06631b0ae44801843abe568be6, type: 2}
+    - target: {fileID: 1464508029, guid: 79480851f73c44a4e996a5b8a1c51d31, type: 3}
       propertyPath: elevatorSystem
       value: 
       objectReference: {fileID: 829601758}
@@ -1668,6 +1672,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 8300000, guid: c4acecbb10578744a95949e33626442d, type: 3}
     - target: {fileID: 5698033067523850340, guid: 1e44195df7f6abc4f884460864627f82, type: 3}
+      propertyPath: elevatorData
+      value: 
+      objectReference: {fileID: 11400000, guid: 6f771b06631b0ae44801843abe568be6, type: 2}
+    - target: {fileID: 5698033067523850340, guid: 1e44195df7f6abc4f884460864627f82, type: 3}
       propertyPath: floors.Array.size
       value: 3
       objectReference: {fileID: 0}
@@ -1887,6 +1895,10 @@ PrefabInstance:
       propertyPath: rolloffCustomCurve.m_Curve.Array.data[6].outWeight
       value: 0.95742494
       objectReference: {fileID: 0}
+    - target: {fileID: 7234142469416330521, guid: 1e44195df7f6abc4f884460864627f82, type: 3}
+      propertyPath: elevatorData
+      value: 
+      objectReference: {fileID: 11400000, guid: 6f771b06631b0ae44801843abe568be6, type: 2}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 1e44195df7f6abc4f884460864627f82, type: 3}
 --- !u!1 &1646596174
@@ -2097,6 +2109,10 @@ PrefabInstance:
       propertyPath: panelText
       value: 
       objectReference: {fileID: 338472556}
+    - target: {fileID: 1464508029, guid: 79480851f73c44a4e996a5b8a1c51d31, type: 3}
+      propertyPath: elevatorData
+      value: 
+      objectReference: {fileID: 11400000, guid: 6f771b06631b0ae44801843abe568be6, type: 2}
     - target: {fileID: 1464508029, guid: 79480851f73c44a4e996a5b8a1c51d31, type: 3}
       propertyPath: elevatorSystem
       value: 
@@ -2414,6 +2430,10 @@ PrefabInstance:
       propertyPath: panelText
       value: 
       objectReference: {fileID: 32676899}
+    - target: {fileID: 1464508029, guid: 79480851f73c44a4e996a5b8a1c51d31, type: 3}
+      propertyPath: elevatorData
+      value: 
+      objectReference: {fileID: 11400000, guid: 6f771b06631b0ae44801843abe568be6, type: 2}
     - target: {fileID: 1464508029, guid: 79480851f73c44a4e996a5b8a1c51d31, type: 3}
       propertyPath: elevatorSystem
       value: 
