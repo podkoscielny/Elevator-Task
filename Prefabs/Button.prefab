@@ -96,7 +96,7 @@ SphereCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Radius: 0.5
+  m_Radius: 0.47
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!82 &-941365691686283895
 AudioSource:
@@ -212,7 +212,6 @@ MonoBehaviour:
   buttonAudio: {fileID: -941365691686283895}
   clickSound: {fileID: 8300000, guid: 8fc279315444760408e295394833a582, type: 3}
   buzzerSound: {fileID: 8300000, guid: c4acecbb10578744a95949e33626442d, type: 3}
-  interactableDistance: {fileID: 0}
 --- !u!1 &3523182871426049553
 GameObject:
   m_ObjectHideFlags: 0

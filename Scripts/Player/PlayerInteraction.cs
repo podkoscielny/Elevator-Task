@@ -22,7 +22,9 @@ namespace ElevatorTask
         {
             Physics.Raycast(mainCamera.position, mainCamera.forward, out RaycastHit hitInfo, Mathf.Infinity, interactableMask);
 
-            if (hitInfo.collider != null && hitInfo.transform.TryGetComponent(out IInteractable interactable))
+            Collider hitInfoCollider = hitInfo.collider;
+
+            if (hitInfoCollider != null && hitInfoCollider.TryGetComponent(out IInteractable interactable))
                 interactable.Interact();
         }
     }
