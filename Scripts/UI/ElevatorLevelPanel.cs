@@ -14,6 +14,8 @@ namespace ElevatorTask
 
         private void OnDisable() => elevatorData.OnElevatorLevelChanged -= SetCurrentElevatorLevelText;
 
+        private void Start() => SetCurrentElevatorLevelText(elevatorData.CurrentElevatorLevel);
+
         private void SetCurrentElevatorLevelText(int elevatorLevel) => panelText.text = $"{elevatorLevel}";
     }
 }

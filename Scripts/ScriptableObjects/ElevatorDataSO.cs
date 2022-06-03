@@ -39,7 +39,6 @@ namespace ElevatorTask
         private void OnEnable() => EditorApplication.playModeStateChanged += ResetElevatorState;
 
         private void OnDisable() => EditorApplication.playModeStateChanged -= ResetElevatorState;
-#endif
 
         private void ResetElevatorState(PlayModeStateChange changedState)
         {
@@ -55,5 +54,6 @@ namespace ElevatorTask
                 CollidablesBlockingDoors = new List<GameObject>();
             }
         }
+#endif
     }
 }

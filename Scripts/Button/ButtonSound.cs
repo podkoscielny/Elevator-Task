@@ -18,7 +18,7 @@ namespace ElevatorTask
             buttonAudio.Play();
         }
 
-        protected virtual void OnMouseDown()
+        protected void PlayClickSound()
         {
             buttonAudio.clip = clickSound;
             buttonAudio.Play();

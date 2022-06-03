@@ -212,7 +212,7 @@ namespace ElevatorTask
 
         private void SetInitialElevatorPosition()
         {
-            float firstFloorPositionY = floors[0].ElevatorTarget.position.y;
+            float firstFloorPositionY = floors[elevatorData.CurrentElevatorLevel].ElevatorTarget.position.y;
             Vector3 targetPosition = new Vector3(transform.position.x, firstFloorPositionY, transform.position.z);
 
             transform.position = targetPosition;

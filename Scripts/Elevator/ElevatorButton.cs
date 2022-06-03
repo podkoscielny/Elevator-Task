@@ -3,13 +3,13 @@ using UnityEngine;
 
 namespace ElevatorTask
 {
-    public class ElevatorButton : ButtonSound
+    public class ElevatorButton : ButtonSound, IInteractable
     {
         public event Action<int, ButtonSound> OnButtonClicked;
 
         [field: SerializeField] public int TargetElevatorLevel;
 
-        protected override void OnMouseDown()
+        public void Interact()
         {
             if (!Interactable.IsPlayerInRange(transform.position, PlayerLayer))
             {
@@ -17,8 +17,7 @@ namespace ElevatorTask
                 return;
             }
 
-            base.OnMouseDown();
-
+            PlayClickSound();
             OnButtonClicked?.Invoke(TargetElevatorLevel, this);
         }
     }

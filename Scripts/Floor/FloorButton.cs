@@ -3,13 +3,11 @@ using UnityEngine;
 
 namespace ElevatorTask
 {
-    public class FloorButton : ButtonSound
+    public class FloorButton : ButtonSound, IInteractable
     {
         public event Action<ButtonSound> OnFloorButtonClicked;
 
-        [SerializeField] InteractableDistance interactableDistance;
-
-        protected override void OnMouseDown()
+        public void Interact()
         {
             if (!Interactable.IsPlayerInRange(transform.position, PlayerLayer))
             {
@@ -17,8 +15,7 @@ namespace ElevatorTask
                 return;
             }
 
-            base.OnMouseDown();
-
+            PlayClickSound();
             OnFloorButtonClicked?.Invoke(this);
         }
     }

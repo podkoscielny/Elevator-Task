@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 5822738658115517006}
   - component: {fileID: -941365691686283895}
   - component: {fileID: 444009003595221147}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Button
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -212,6 +212,7 @@ MonoBehaviour:
   buttonAudio: {fileID: -941365691686283895}
   clickSound: {fileID: 8300000, guid: 8fc279315444760408e295394833a582, type: 3}
   buzzerSound: {fileID: 8300000, guid: c4acecbb10578744a95949e33626442d, type: 3}
+  interactableDistance: {fileID: 0}
 --- !u!1 &3523182871426049553
 GameObject:
   m_ObjectHideFlags: 0
@@ -223,7 +224,7 @@ GameObject:
   - component: {fileID: 1053830447318345638}
   - component: {fileID: 5725567549614185736}
   - component: {fileID: 3280500591623791721}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Text (TMP)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
