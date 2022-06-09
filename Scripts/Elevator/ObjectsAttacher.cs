@@ -8,7 +8,6 @@ namespace ElevatorTask
     {
         [SerializeField] LayerMask collidableLayer;
 
-
         private void OnTriggerEnter(Collider collider)
         {
             if (IsObjectsMaskCollidable(collider.gameObject.layer)) collider.transform.parent = transform;

@@ -121,10 +121,9 @@ namespace ElevatorTask
         {
             yield return new WaitUntil(() => elevatorData.AreDoorsClosed);
 
-            elevatorData.IsElevatorMoving = true;
-            int levelDifference = targetFloorLevel - elevatorData.CurrentElevatorLevel;
+            SetElevatorMovementToStarted();
 
-            OnElevatorMovementStarted?.Invoke();
+            int levelDifference = targetFloorLevel - elevatorData.CurrentElevatorLevel;
 
             while (Vector3.Distance(transform.position, targetPosition) > 0.01f)
             {
@@ -135,6 +134,17 @@ namespace ElevatorTask
                 yield return null;
             }
 
+            SetElevatorMovementToEnded(targetFloorLevel);
+        }
+
+        private void SetElevatorMovementToStarted()
+        {
+            elevatorData.IsElevatorMoving = true;
+            OnElevatorMovementStarted?.Invoke();
+        }
+
+        private void SetElevatorMovementToEnded(int targetFloorLevel)
+        {
             OnElevatorMovementEnded?.Invoke();
 
             elevatorData.CurrentElevatorLevel = targetFloorLevel;
