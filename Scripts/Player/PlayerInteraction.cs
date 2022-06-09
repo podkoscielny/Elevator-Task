@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 namespace ElevatorTask
 {
@@ -11,21 +12,19 @@ namespace ElevatorTask
 
         private void Start() => LockCursor();
 
-        private void Update()
+        public void CheckInteractableItem(InputAction.CallbackContext context)
         {
-            if (Input.GetMouseButtonDown(0)) CheckInteractableItem();
+            if (context.performed)
+            {
+                Physics.Raycast(mainCamera.position, mainCamera.forward, out RaycastHit hitInfo, Mathf.Infinity, interactableMask);
+
+                Collider hitInfoCollider = hitInfo.collider;
+
+                if (hitInfoCollider != null && hitInfoCollider.TryGetComponent(out IInteractable interactable))
+                    interactable.Interact();
+            }
         }
 
         private void LockCursor() => Cursor.lockState = CursorLockMode.Locked;
-
-        private void CheckInteractableItem()
-        {
-            Physics.Raycast(mainCamera.position, mainCamera.forward, out RaycastHit hitInfo, Mathf.Infinity, interactableMask);
-
-            Collider hitInfoCollider = hitInfo.collider;
-
-            if (hitInfoCollider != null && hitInfoCollider.TryGetComponent(out IInteractable interactable))
-                interactable.Interact();
-        }
     }
 }
